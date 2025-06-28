@@ -1,0 +1,43 @@
+package com.eloskar.restaurante.controller.Usuarios;
+
+import com.eloskar.restaurante.DTO.UsuarioDTO;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet(name = "SrvBuscarUsuario", value = "/SrvBuscarUsuario")
+public class SrvBuscarUsuario extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String filtro = request.getParameter("filtro");
+        if (filtro == null) {
+            filtro = "";
+        }
+
+        response.setContentType("text/html;charset=UTF-8");
+        UsuarioDTO user = new UsuarioDTO();
+        List<UsuarioDTO> usuarios = user.cargarDatosUsuarios(filtro);
+
+        request.setAttribute("usuario", usuarios);
+        RequestDispatcher dp = request.getRequestDispatcher("/jsp/Usuarios.jsp");
+        dp.forward(request, response);
+    }
+}
