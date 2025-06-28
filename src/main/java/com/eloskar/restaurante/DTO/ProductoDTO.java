@@ -81,11 +81,7 @@ public class ProductoDTO {
         dto.setCategoria(categoria);
 
         ProductoDAO dao = new ProductoDAO();
-        if (dao.insertProd(dto) > 0){
-            return true;
-        }else{
-            return false;
-        }
+        return dao.insertProd(dto) > 0;
     }
 
     public boolean actualizarProd(){
@@ -98,22 +94,23 @@ public class ProductoDTO {
         dto.setCategoria(categoria);
 
         ProductoDAO dao = new ProductoDAO();
-        if (dao.updateProd(dto) > 0){
-            return true;
-        }else{
-            return false;
-        }
+        return dao.updateProd(dto) > 0;
+    }
+
+    public boolean actualizarDispProd(){
+        ProductoDTO dto = new ProductoDTO();
+        dto.setIdProd(idProd);
+        dto.setDisponible(disponible);
+
+        ProductoDAO dao = new ProductoDAO();
+        return dao.updateDispProd(dto) > 0;
     }
 
     public boolean eliminarProd(){
         ProductoDTO dto = new ProductoDTO();
         dto.setIdProd(idProd);
         ProductoDAO dao = new ProductoDAO();
-        if (dao.deleteProd(dto) > 0){
-            return true;
-        }else{
-            return false;
-        }
+        return dao.deleteProd(dto) > 0;
     }
 
     public List<ProductoDTO> cargarDatosProductos(String filtro, String cate){

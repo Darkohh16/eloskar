@@ -55,6 +55,21 @@ public class ProductoDAO {
         }
     }
 
+    public int updateDispProd(ProductoDTO dto) {
+        String sql = "UPDATE productos SET disponible = ? WHERE idProd = ?;";
+
+        try (Connection con = Conexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql)) {
+
+            pstm.setBoolean(1, dto.isDisponible());
+            pstm.setInt(2, dto.getIdProd());
+
+            return pstm.executeUpdate();
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al actualizar disponibilidad producto: " + ex.getMessage(), ex);
+        }
+    }
 
     public int deleteProd(ProductoDTO dto) {
         String sql = "DELETE productos WHERE idProd = ?";

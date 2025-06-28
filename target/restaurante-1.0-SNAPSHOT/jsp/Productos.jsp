@@ -100,7 +100,12 @@
                     <td>
                         <button class="btn-accion editar">Editar</button>
                         <button class="btn-accion eliminar" data-id="<%= p.getIdProd() %>">Eliminar</button>
-                        <button class="btn-accion cambiar">No disponible</button>
+                        <button
+                                class="btn-accion cambiar <%= a %>"
+                                data-id1="<%= p.getIdProd() %>"
+                                data-id2="<%= p.isDisponible() %>">
+                                <%= d.equals("No") ? "Disponible" : "No disponible" %>
+                        </button>
                     </td>
                 </tr>
                 <%      }

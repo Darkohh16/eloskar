@@ -339,10 +339,16 @@ body {
 .btn-accion.eliminar:hover {
     background: #b71c1c;
 }
-.btn-accion.cambiar {
-    background: #ffb300;
+.btn-accion.cambiar.si {
+    background: rgba(214, 200, 48, 0.98);
     color: #222;
 }
+
+.btn-accion.cambiar.no {
+    background: #da7e1e;
+    color: #222;
+}
+
 .btn-accion.cambiar:hover {
     background: #ff8f00;
 }

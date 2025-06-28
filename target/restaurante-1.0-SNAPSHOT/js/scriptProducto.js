@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const id = e.target.dataset.id;
 
             if (!id) {
-                alert("No se encontró el ID del usuario.");
+                alert("No se encontró el ID del producto.");
                 return;
             }
 
@@ -21,6 +21,31 @@ document.addEventListener("DOMContentLoaded", () => {
                         } else {
                             alert("Error al eliminar. Código: " + response.status);
                         }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("Error en la solicitud.");
+                    });
+            }
+        }
+    });
+
+    document.addEventListener("click", function (e) {
+        if (e.target.matches(".btn-accion.cambiar")) {
+            const id = e.target.dataset.id1;
+            const disp = e.target.dataset.id2;
+
+            if (!id || !disp) {
+                alert("No se encontraron los datos del producto.");
+                return;
+            }
+
+            if (confirm("¿Cambiar disponibilidad de producto con ID " + id +"?")) {
+                fetch(cP + `/SrvActualizarDispProducto?id=${id}&disponible=${disp}`,{
+                    method: "POST"
+                })
+                    .then(() => {
+                        location.reload();
                     })
                     .catch(error => {
                         console.error("Error:", error);
