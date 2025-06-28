@@ -42,22 +42,25 @@
             </div>
         </header>
         <section class="filters-section">
-            <form method="get" action="SrvBuscarProducto" class="filters-form">
-                <input type="text" name = "filtro" placeholder="Buscar por nombre o descripcion..." class="input-search">
-                <select  id="edit-catF" name="catF">
-                    <option value="Todos">Todos</option>
-                    <%
-                        if (categorias != null) {
-                            for(CategoriaDTO c : categorias) {
-                    %>
-                    <option value="<%= c.getNombre() %>"> <%= c.getNombre() %> </option>
-                    <%
+            <div class="filters-bar">
+                <button class="btn-accion agregar">Agregar Producto</button>
+                <form method="get" action="SrvBuscarProducto" class="filters-form">
+                    <input type="text" name = "filtro" placeholder="Buscar por nombre o descripcion..." class="input-search">
+                    <select  id="edit-catF" name="catF">
+                        <option value="Todos">Todos</option>
+                        <%
+                            if (categorias != null) {
+                                for(CategoriaDTO c : categorias) {
+                        %>
+                        <option value="<%= c.getNombre() %>"> <%= c.getNombre() %> </option>
+                        <%
+                                }
                             }
-                        }
-                    %>
-                </select>
-                <button type="submit" class="btn-filtrar">Filtrar</button>
-            </form>
+                        %>
+                    </select>
+                    <button type="submit" class="btn-filtrar">Filtrar</button>
+                </form>
+            </div>
         </section>
         <section class="table-section">
             <table class="main-table">
@@ -82,7 +85,7 @@
                     <td><%= p.getIdProd() %></td>
                     <td><%= p.getNombre() %></td>
                     <td class="cat"><%= p.getCategoria().getNombre() %></td>
-                    <td><%= p.getDecripcion() %></td>
+                    <td><%= p.getDescripcion() %></td>
                     <td><%= p.getPrecio() %></td>
                     <td><%= p.getImagen() %></td>
                     <% if (p.isDisponible()) {
@@ -136,23 +139,32 @@
                     </div>
                 </div>
 
-                <!-- Modal para agregar usuario -->
-                <div id="modal-agregar-usuario" class="modal">
+                <!-- Modal para agregar producto -->
+                <div id="modal-agregar-producto" class="modal">
                     <div class="modal-content">
                         <span class="close" id="cerrar-modal-agregar">&times;</span>
-                        <h2>Agregar Usuario</h2>
-                        <form id="form-agregar-usuario" method="post">
-                            <input type="hidden" id="agregar-id" name="id">
+                        <h2>Agregar Producto</h2>
+                        <form id="form-agregar-producto" method="post">
                             <label>Nombre:</label>
                             <input type="text" id="agregar-nombre" name="nombre" required>
-                            <label>DNI:</label>
-                            <input type="text" id="agregar-dni" name="dni" required>
-                            <label>Correo:</label>
-                            <input type="text" id="agregar-correo" name="correo" required>
-                            <label>Celular:</label>
-                            <input type="text" id="agregar-celular" name="celular" required>
-                            <label>Contrasenia:</label>
-                            <input type="password" id="agregar-password" name="password" required>
+                            <label>Descripcion:</label>
+                            <input type="text" id="agregar-descripcion" name="descripcion" required>
+                            <label>Precio:</label>
+                            <input type="text" id="agregar-precio" name="precio" required>
+                            <label>Ruta Imagen:</label>
+                            <input type="text" id="agregar-rImagen" name="rImagen" required>
+                            <label>Categoria:</label>
+                            <select  id="agregar-cat" name="cat" required>
+                                <%
+                                    if (categorias != null) {
+                                        for(CategoriaDTO c : categorias) {
+                                %>
+                                <option value="<%= c.getNombre() %>"> <%= c.getNombre() %> </option>
+                                <%
+                                        }
+                                    }
+                                %>
+                            </select>
                             <button type="submit" class="btn-agregar">Guardar Cambios</button>
                         </form>
                     </div>

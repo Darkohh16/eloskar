@@ -13,17 +13,18 @@ import java.util.List;
 
 public class ProductoDAO {
     public int insertProd(ProductoDTO dto) {
-        String sql = "INSERT INTO productos (nombre, descripcion, precio, imagen, disponible, categoria_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO productos (nombre, descripcion, precio, imagen, disponible, categoria_id) " +
+                "VALUES (?, ?, ?, ?, ?, (SELECT idCat FROM categorias WHERE nombre = ?))";
 
         try (Connection con = Conexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
             pstm.setString(1, dto.getNombre());
-            pstm.setString(2, dto.getDecripcion());
+            pstm.setString(2, dto.getDescripcion());
             pstm.setFloat(3, dto.getPrecio());
             pstm.setString(4, dto.getImagen());
             pstm.setBoolean(5, dto.isDisponible());
-            pstm.setInt(6, dto.getCategoria().getIdCat());
+            pstm.setString(6, dto.getCategoria().getNombre());
 
             return pstm.executeUpdate();
 
@@ -41,7 +42,7 @@ public class ProductoDAO {
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
             pstm.setString(1, dto.getNombre());
-            pstm.setString(2, dto.getDecripcion());
+            pstm.setString(2, dto.getDescripcion());
             pstm.setFloat(3, dto.getPrecio());
             pstm.setString(4, dto.getImagen());
             pstm.setString(5, dto.getCategoria().getNombre());
@@ -100,7 +101,7 @@ public class ProductoDAO {
                         ProductoDTO dto = new ProductoDTO();
                         dto.setIdProd(rs.getInt("idProd"));
                         dto.setNombre(rs.getString("nombre"));
-                        dto.setDecripcion(rs.getString("descripcion"));
+                        dto.setDescripcion(rs.getString("descripcion"));
                         dto.setPrecio(rs.getFloat("precio"));
                         dto.setDisponible(rs.getBoolean("disponible"));
                         dto.setImagen(rs.getString("imagen"));

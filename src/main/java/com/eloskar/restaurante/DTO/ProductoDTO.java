@@ -2,13 +2,12 @@ package com.eloskar.restaurante.DTO;
 
 import com.eloskar.restaurante.DAO.ProductoDAO;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductoDTO {
     private int idProd;
     private String nombre;
-    private String decripcion;
+    private String descripcion;
     private float precio;
     private String imagen;
     private boolean disponible;
@@ -30,12 +29,12 @@ public class ProductoDTO {
         this.nombre = nombre;
     }
 
-    public String getDecripcion() {
-        return decripcion;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDecripcion(String decripcion) {
-        this.decripcion = decripcion;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public float getPrecio() {
@@ -71,11 +70,11 @@ public class ProductoDTO {
     }
 
 
-    public boolean insertarU(){
+    public boolean insertarProd(){
         ProductoDTO dto = new ProductoDTO();
         dto.setIdProd(idProd);
         dto.setNombre(nombre);
-        dto.setDecripcion(decripcion);
+        dto.setDescripcion(descripcion);
         dto.setPrecio(precio);
         dto.setImagen(imagen);
         dto.setDisponible(disponible);
@@ -93,7 +92,7 @@ public class ProductoDTO {
         ProductoDTO dto = new ProductoDTO();
         dto.setIdProd(idProd);
         dto.setNombre(nombre);
-        dto.setDecripcion(decripcion);
+        dto.setDescripcion(descripcion);
         dto.setPrecio(precio);
         dto.setImagen(imagen);
         dto.setCategoria(categoria);

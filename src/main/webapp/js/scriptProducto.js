@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.addEventListener("click", function (e) {
         if (e.target.matches(".btn-accion.agregar")) {
-            document.getElementById("modal-agregar-usuario").style.display = "flex";
+            document.getElementById("modal-agregar-producto").style.display = "flex";
         }
     });
 
@@ -45,8 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("edit-descripcion").value = fila.children[3].textContent;
             document.getElementById("edit-precio").value = fila.children[4].textContent;
             document.getElementById("edit-imagen").value = fila.children[5].textContent;
-            const catElement = fila.querySelector('.cat').textContent.trim();
-            document.getElementById('edit-cat').value = catElement;
+            document.getElementById('edit-cat').value = fila.querySelector('.cat').textContent.trim();
 
             document.getElementById("modal-editar-producto").style.display = "flex";
         }
@@ -73,5 +72,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById("form-editar-producto").action = cP + "/SrvActualizarProducto";
-    //document.getElementById("form-agregar-producto").action = cP + "/SrvAgregarUsuario";
+    document.getElementById("form-agregar-producto").action = cP + "/SrvAgregarProducto";
 });

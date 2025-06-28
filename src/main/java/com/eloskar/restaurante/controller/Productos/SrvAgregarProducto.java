@@ -7,10 +7,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
-@WebServlet(name = "SrvActualizarProducto", value = "/SrvActualizarProducto")
-public class SrvActualizarProducto extends HttpServlet {
+@WebServlet(name = "SrvAgregarProducto", value = "/SrvAgregarProducto")
+public class SrvAgregarProducto extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -26,21 +27,19 @@ public class SrvActualizarProducto extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         ProductoDTO dto = new ProductoDTO();
-        dto.setIdProd(Integer.parseInt(request.getParameter("id")));
         dto.setNombre(request.getParameter("nombre"));
         dto.setDescripcion(request.getParameter("descripcion"));
         dto.setPrecio(Float.parseFloat(request.getParameter("precio")));
-        dto.setImagen(request.getParameter("imagen"));
+        dto.setImagen(request.getParameter("rImagen"));
 
-        CategoriaDTO categoria = new CategoriaDTO();
-        categoria.setNombre(request.getParameter("cat"));
-        dto.setCategoria(categoria);
+        CategoriaDTO cat = new CategoriaDTO();
+        cat.setNombre(request.getParameter("cat"));
 
-        if (dto.actualizarProd()){
+        dto.setCategoria(cat);
+        if (dto.insertarProd()){
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Producto Actualizado con éxito'); window.location='jsp/Productos.jsp';</script>");
+            response.getWriter().write("<script>alert('Producto registrado con éxito'); window.location='jsp/Productos.jsp';</script>");
         }
     }
 }
