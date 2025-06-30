@@ -36,7 +36,7 @@ public class SrvAgregarUsuario extends HttpServlet {
         dto.setPassword(request.getParameter("password"));
         if (dto.insertarU()){
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Usuario registrado con éxito'); window.location='jsp/Usuarios.jsp';</script>");
+            response.getWriter().write("<script>alert('Usuario registrado con éxito'); window.location='jsp/dashboardJSP/Usuarios.jsp';</script>");
         }
     }
 }

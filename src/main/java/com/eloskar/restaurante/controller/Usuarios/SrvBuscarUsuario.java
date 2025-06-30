@@ -37,7 +37,7 @@ public class SrvBuscarUsuario extends HttpServlet {
         List<UsuarioDTO> usuarios = user.cargarDatosUsuarios(filtro);
 
         request.setAttribute("usuario", usuarios);
-        RequestDispatcher dp = request.getRequestDispatcher("/jsp/Usuarios.jsp");
+        RequestDispatcher dp = request.getRequestDispatcher("/jsp/dashboardJSP/Usuarios.jsp");
         dp.forward(request, response);
     }
 }

@@ -33,7 +33,7 @@ public class SrvActualizarDispProducto extends HttpServlet {
 
         if (dto.actualizarDispProd()){
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Disponibilidad producto actualizado con éxito'); window.location='jsp/Productos.jsp';</script>");
+            response.getWriter().write("<script>alert('Disponibilidad producto actualizado con éxito'); window.location='jsp/dashboardJSP/Productos.jsp';</script>");
         }
     }
 }

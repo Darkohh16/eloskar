@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const cP = document.body.dataset.contextPath;
 
-    fetch(cP + "/jsp/MenuLateral.jsp")
+    fetch(cP + "/jsp/dashboardJSP/MenuLateral.jsp")
         .then(response => response.text())
         .then(data => {
             const menuContainer = document.getElementById('menu-lateral');

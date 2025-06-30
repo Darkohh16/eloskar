@@ -36,7 +36,7 @@ public class SrvActualizarUsuario extends HttpServlet {
 
         if (dto.actualizarU()){
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Usuario Actualizado con éxito'); window.location='jsp/Usuarios.jsp';</script>");
+            response.getWriter().write("<script>alert('Usuario Actualizado con éxito'); window.location='jsp/dashboardJSP/Usuarios.jsp';</script>");
         }
     }
 }

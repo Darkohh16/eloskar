@@ -48,6 +48,6 @@ public class SrvBuscarProducto extends HttpServlet {
         //DEPLOY============================================================
         request.setAttribute("producto", productos);
         request.setAttribute("categoria", categorias);
-        request.getRequestDispatcher("/jsp/Productos.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/dashboardJSP/Productos.jsp").forward(request, response);
     }
 }

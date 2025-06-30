@@ -31,7 +31,7 @@ public class SrvEliminarProducto extends HttpServlet {
         dto.setIdProd(Integer.parseInt(request.getParameter("idProd")));
         if (dto.eliminarProd()){
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Producto Eliminado con éxito'); window.location='jsp/Productos.jsp';</script>");
+            response.getWriter().write("<script>alert('Producto Eliminado con éxito'); window.location='jsp/dashboardJSP/Productos.jsp';</script>");
         }
     }
 }

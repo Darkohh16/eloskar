@@ -32,7 +32,7 @@ public class SrvEliminarUsuario extends HttpServlet {
         dto.setIdUser(Integer.parseInt(request.getParameter("idUser")));
         if (dto.eliminarU()){
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Usuario Eliminado con éxito'); window.location='jsp/Usuarios.jsp';</script>");
+            response.getWriter().write("<script>alert('Usuario Eliminado con éxito'); window.location='jsp/dashboardJSP/Usuarios.jsp';</script>");
         }
     }
 }
