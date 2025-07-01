@@ -138,6 +138,23 @@ body {
     content: '\1F6D2'; /* Unicode carrito de compras */
 }
 
+/* Disponibilidad */
+.no-disponible .menu-info {
+    opacity: 0.5;
+    pointer-events: none; /* Opcional: evita clics en contenido */
+}
+
+.no-disponible .no-disponible-msg {
+    color: #cc0000;
+    font-size: 0.9em;
+    margin-top: 8px;
+}
+
+.menu-img {
+    filter: none !important; /* Asegura que la imagen se vea normal */
+}
+
+
 /* Footer */
 .footer {
     background: #009fe3;

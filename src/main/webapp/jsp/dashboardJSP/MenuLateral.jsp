@@ -19,6 +19,7 @@
       <li><a href="jsp/dashboardJSP/Productos.jsp">Productos</a></li>
       <li><a href="jsp/dashboardJSP/Usuarios.jsp">Usuarios</a></li>
       <li><a href="jsp/dashboardJSP/Reportes.jsp">Reportes</a></li>
+      <li><a href="jsp/eloskarJSP/index.jsp">Volver al inicio</a></li>
     </ul>
   </nav>
 </aside>

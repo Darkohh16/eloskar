@@ -12,7 +12,7 @@
     List<ProductoDTO> productos = (List<ProductoDTO>) request.getAttribute("producto");
     String d, a;
     if (productos == null) {
-        response.sendRedirect(request.getContextPath() + "/SrvBuscarProducto");
+        response.sendRedirect(request.getContextPath() + "/SrvBuscarProducto?ruta=/jsp/dashboardJSP/Productos.jsp");
         return;
     }
     List<CategoriaDTO> categorias = (List<CategoriaDTO>) request.getAttribute("categoria");

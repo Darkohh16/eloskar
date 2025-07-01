@@ -30,6 +30,7 @@ public class SrvBuscarProducto extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //PRODUCTOS============================================================
+        String rutaP = request.getParameter("ruta");
         String filtro = request.getParameter("filtro");
         String cat = request.getParameter("catF");
         if (filtro == null) {
@@ -48,6 +49,6 @@ public class SrvBuscarProducto extends HttpServlet {
         //DEPLOY============================================================
         request.setAttribute("producto", productos);
         request.setAttribute("categoria", categorias);
-        request.getRequestDispatcher("/jsp/dashboardJSP/Productos.jsp").forward(request, response);
+        request.getRequestDispatcher(rutaP).forward(request, response);
     }
 }
