@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
   <base href="${pageContext.request.contextPath}/">
+  <title></title>
 </head>
 <aside class="sidebar">
   <h2>Restaurante</h2>
@@ -17,7 +18,7 @@
       <li><a href="jsp/dashboardJSP/Reservas.jsp">Reservas</a></li>
       <li><a href="jsp/dashboardJSP/Pedidos.jsp">Pedidos</a></li>
       <li><a href="jsp/dashboardJSP/Productos.jsp">Productos</a></li>
-      <li><a href="jsp/dashboardJSP/Usuarios.jsp">Usuarios</a></li>
+      <li><a href="SrvBuscarUsuario">Usuarios</a></li>
       <li><a href="jsp/dashboardJSP/Reportes.jsp">Reportes</a></li>
       <li><a href="jsp/eloskarJSP/index.jsp">Volver al inicio</a></li>
     </ul>

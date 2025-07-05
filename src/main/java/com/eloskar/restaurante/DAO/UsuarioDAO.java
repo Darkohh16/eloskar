@@ -60,13 +60,13 @@ public class UsuarioDAO {
     }
 
 
-    public int deleteU(UsuarioDTO dto) {
+    public int deleteU(int id) {
         String sql = "DELETE usuarios WHERE idUser = ?";
 
         try (Connection con = Conexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
-            pstm.setInt(1, dto.getIdUser());
+            pstm.setInt(1, id);
 
             return pstm.executeUpdate();
 

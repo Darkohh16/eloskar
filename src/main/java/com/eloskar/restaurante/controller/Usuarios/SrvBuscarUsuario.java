@@ -1,6 +1,8 @@
 package com.eloskar.restaurante.controller.Usuarios;
 
+import com.eloskar.restaurante.DAO.UsuarioDAO;
 import com.eloskar.restaurante.DTO.UsuarioDTO;
+import com.eloskar.restaurante.services.UsuarioService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -32,9 +34,9 @@ public class SrvBuscarUsuario extends HttpServlet {
             filtro = "";
         }
 
-        response.setContentType("text/html;charset=UTF-8");
         UsuarioDTO user = new UsuarioDTO();
-        List<UsuarioDTO> usuarios = user.cargarDatosUsuarios(filtro);
+        UsuarioService service = new UsuarioService();
+        List<UsuarioDTO> usuarios = service.cargarDatosUsuarios(filtro);
 
         request.setAttribute("usuario", usuarios);
         RequestDispatcher dp = request.getRequestDispatcher("/jsp/dashboardJSP/Usuarios.jsp");

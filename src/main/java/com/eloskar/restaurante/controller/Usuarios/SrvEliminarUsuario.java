@@ -1,6 +1,7 @@
 package com.eloskar.restaurante.controller.Usuarios;
 
 import com.eloskar.restaurante.DTO.UsuarioDTO;
+import com.eloskar.restaurante.services.UsuarioService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -27,12 +28,13 @@ public class SrvEliminarUsuario extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        UsuarioDTO dto = new UsuarioDTO();
-        dto.setIdUser(Integer.parseInt(request.getParameter("idUser")));
-        if (dto.eliminarU()){
+        int id = Integer.parseInt(request.getParameter("idUser"));
+
+        UsuarioService service = new UsuarioService();
+        if (service.eliminarU(id)) {
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Usuario Eliminado con éxito'); window.location='jsp/dashboardJSP/Usuarios.jsp';</script>");
+            response.getWriter().write("<script>alert('Usuario Eliminado con éxito'); " +
+                    "window.location='SrvBuscarUsuario';</script>");
         }
     }
 }

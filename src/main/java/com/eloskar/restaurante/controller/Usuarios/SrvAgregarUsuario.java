@@ -1,6 +1,7 @@
 package com.eloskar.restaurante.controller.Usuarios;
 
 import com.eloskar.restaurante.DTO.UsuarioDTO;
+import com.eloskar.restaurante.services.UsuarioService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -27,16 +28,18 @@ public class SrvAgregarUsuario extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         UsuarioDTO dto = new UsuarioDTO();
         dto.setDni(request.getParameter("dni"));
         dto.setCel(request.getParameter("celular"));
         dto.setNombre(request.getParameter("nombre"));
         dto.setCorreo(request.getParameter("correo"));
         dto.setPassword(request.getParameter("password"));
-        if (dto.insertarU()){
+
+        UsuarioService service = new UsuarioService();
+        if (service.insertarU(dto)){
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Usuario registrado con éxito'); window.location='jsp/dashboardJSP/Usuarios.jsp';</script>");
+            response.getWriter().write("<script>alert('Usuario registrado con éxito'); " +
+                    "window.location='SrvBuscarUsuario';</script>");
         }
     }
 }

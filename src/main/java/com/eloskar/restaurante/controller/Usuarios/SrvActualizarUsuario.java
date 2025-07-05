@@ -1,6 +1,7 @@
 package com.eloskar.restaurante.controller.Usuarios;
 
 import com.eloskar.restaurante.DTO.UsuarioDTO;
+import com.eloskar.restaurante.services.UsuarioService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,7 +26,6 @@ public class SrvActualizarUsuario extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         UsuarioDTO dto = new UsuarioDTO();
         dto.setIdUser(Integer.parseInt(request.getParameter("id")));
         dto.setDni(request.getParameter("dni"));
@@ -34,9 +34,11 @@ public class SrvActualizarUsuario extends HttpServlet {
         dto.setCorreo(request.getParameter("correo"));
         dto.setRol(request.getParameter("rol"));
 
-        if (dto.actualizarU()){
+        UsuarioService service = new UsuarioService();
+        if (service.actualizarU(dto)){
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Usuario Actualizado con éxito'); window.location='jsp/dashboardJSP/Usuarios.jsp';</script>");
+            response.getWriter().write("<script>alert('Usuario Actualizado con éxito'); " +
+                    "window.location='SrvBuscarUsuario';</script>");
         }
     }
 }

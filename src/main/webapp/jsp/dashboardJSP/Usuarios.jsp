@@ -9,10 +9,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   List<UsuarioDTO> usuarios = (List<UsuarioDTO>) request.getAttribute("usuario");
-  if (usuarios == null) {
-    response.sendRedirect(request.getContextPath() + "/SrvBuscarUsuario");
-    return;
-  }
 %>
 <html lang="es">
 <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
