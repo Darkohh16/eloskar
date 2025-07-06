@@ -18,6 +18,7 @@ public class UsuarioService {
         dto.setNombre(dto.getNombre());
         dto.setCorreo(dto.getCorreo());
         dto.setPassword(dto.getPassword());
+        dto.setRol("cliente");//Estado base
 
         return usuarioDAO.insertU(dto) > 0;
     }

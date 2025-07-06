@@ -2,6 +2,7 @@ package com.eloskar.restaurante.controller.Productos;
 
 import com.eloskar.restaurante.DTO.CategoriaDTO;
 import com.eloskar.restaurante.DTO.ProductoDTO;
+import com.eloskar.restaurante.services.ProductoService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -37,9 +38,12 @@ public class SrvAgregarProducto extends HttpServlet {
         cat.setNombre(request.getParameter("cat"));
 
         dto.setCategoria(cat);
-        if (dto.insertarProd()){
+
+        ProductoService service = new ProductoService();
+        if (service.insertarProd(dto)){
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Producto registrado con éxito'); window.location='jsp/dashboardJSP/Productos.jsp';</script>");
+            response.getWriter().write("<script>alert('Producto registrado con éxito'); " +
+                    "window.location='SrvBuscarProducto';</script>");
         }
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 public class UsuarioDAO {
 
     public int insertU(UsuarioDTO dto) {
-        String sql = "INSERT INTO usuarios (dni, celular, nombre, correo, password) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (dni, celular, nombre, correo, rol, password) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection con = Conexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
@@ -19,7 +19,8 @@ public class UsuarioDAO {
             pstm.setString(2, dto.getCel());
             pstm.setString(3, dto.getNombre());
             pstm.setString(4, dto.getCorreo());
-            pstm.setString(5, dto.getPassword());
+            pstm.setString(5, dto.getRol());
+            pstm.setString(6, dto.getPassword());
 
             return pstm.executeUpdate(); // retorna 1 si se insertó con éxito
 

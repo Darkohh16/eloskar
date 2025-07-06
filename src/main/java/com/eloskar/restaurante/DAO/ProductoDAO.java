@@ -55,14 +55,14 @@ public class ProductoDAO {
         }
     }
 
-    public int updateDispProd(ProductoDTO dto) {
+    public int updateDispProd(int id, boolean disponible) {
         String sql = "UPDATE productos SET disponible = ? WHERE idProd = ?;";
 
         try (Connection con = Conexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
-            pstm.setBoolean(1, dto.isDisponible());
-            pstm.setInt(2, dto.getIdProd());
+            pstm.setBoolean(1, disponible);
+            pstm.setInt(2, id);
 
             return pstm.executeUpdate();
 
@@ -71,13 +71,13 @@ public class ProductoDAO {
         }
     }
 
-    public int deleteProd(ProductoDTO dto) {
+    public int deleteProd(int id) {
         String sql = "DELETE productos WHERE idProd = ?";
 
         try (Connection con = Conexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
-            pstm.setInt(1, dto.getIdProd());
+            pstm.setInt(1, id);
 
             return pstm.executeUpdate();
 
@@ -87,49 +87,93 @@ public class ProductoDAO {
     }
 
 
-    public List<ProductoDTO> buscarTodosProd(String filtro, String cate) {
+    public List<ProductoDTO> buscarTodosProd(String filtro, String cate, int pagina, int entradasMax, int offset) {
         StringBuilder sql = new StringBuilder("SELECT p.idProd, p.nombre, c.nombre AS cate, c.idCat AS idcate, c.descripcion AS descate, p.descripcion, "
                 + "p.precio, p.disponible, p.imagen FROM productos p "
                 + "INNER JOIN categorias c ON p.categoria_id = c.idCat "
                 + "WHERE (p.nombre LIKE ? OR p.descripcion LIKE ?) ");
+        
+        // Agregar condición de categoría solo si no es "Todos"
+        if (!"Todos".equals(cate)) {
+            sql.append("AND c.nombre = ? ");
+        }
+        
+        sql.append("ORDER BY p.idProd OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+        
         List<ProductoDTO> productos = new ArrayList<>();
 
-        try (Connection con = Conexion.getConnection()) {
+        try (Connection con = Conexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql.toString())) {
+            
+            int paramIndex = 1;
+            pstm.setString(paramIndex++, "%" + filtro + "%");
+            pstm.setString(paramIndex++, "%" + filtro + "%");
+            
+            // Agregar parámetro de categoría solo si no es "Todos"
             if (!"Todos".equals(cate)) {
-                sql.append("AND c.idCat = (SELECT idCat FROM categorias WHERE nombre = ?)");
+                pstm.setString(paramIndex++, cate);
             }
+            
+            pstm.setInt(paramIndex++, offset);
+            pstm.setInt(paramIndex, entradasMax);
 
-            try (PreparedStatement pstm = con.prepareStatement(sql.toString())) {
-                pstm.setString(1, "%" + filtro + "%");
-                pstm.setString(2, "%" + filtro + "%");
-                if (!"Todos".equals(cate)) {
-                    pstm.setString(3, cate);
-                }
+            try (ResultSet rs = pstm.executeQuery()) {
+                while (rs.next()) {
+                    CategoriaDTO dtoC = new CategoriaDTO();
+                    dtoC.setIdCat(rs.getInt("idcate"));
+                    dtoC.setNombre(rs.getString("cate"));
+                    dtoC.setDecripcion(rs.getString("descate"));
 
-                try (ResultSet rs = pstm.executeQuery()) {
-                    while (rs.next()) {
-                        CategoriaDTO dtoC = new CategoriaDTO();
-                        dtoC.setIdCat(rs.getInt("idcate"));
-                        dtoC.setNombre(rs.getString("cate"));
-                        dtoC.setDecripcion(rs.getString("descate"));
-
-                        ProductoDTO dto = new ProductoDTO();
-                        dto.setIdProd(rs.getInt("idProd"));
-                        dto.setNombre(rs.getString("nombre"));
-                        dto.setDescripcion(rs.getString("descripcion"));
-                        dto.setPrecio(rs.getFloat("precio"));
-                        dto.setDisponible(rs.getBoolean("disponible"));
-                        dto.setImagen(rs.getString("imagen"));
-                        dto.setCategoria(dtoC);
-                        productos.add(dto);
-                    }
+                    ProductoDTO dto = new ProductoDTO();
+                    dto.setIdProd(rs.getInt("idProd"));
+                    dto.setNombre(rs.getString("nombre"));
+                    dto.setDescripcion(rs.getString("descripcion"));
+                    dto.setPrecio(rs.getFloat("precio"));
+                    dto.setDisponible(rs.getBoolean("disponible"));
+                    dto.setImagen(rs.getString("imagen"));
+                    dto.setCategoria(dtoC);
+                    productos.add(dto);
                 }
             }
-
         } catch (SQLException ex) {
             throw new RuntimeException("Error al cargar productos", ex);
         }
 
         return productos;
     }
+
+    public int obtNumProductos(String filtro, String categoria) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) AS registros FROM productos p ");
+        sql.append("INNER JOIN categorias c ON p.categoria_id = c.idCat ");
+        sql.append("WHERE (p.nombre LIKE ? OR p.descripcion LIKE ?) ");
+        
+        if (!"Todos".equals(categoria)) {
+            sql.append("AND c.nombre = ?");
+        }
+        
+        int numRegistros = 0;
+
+        try (Connection con = Conexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql.toString())) {
+
+            pstm.setString(1, "%" + filtro + "%");
+            pstm.setString(2, "%" + filtro + "%");
+            
+            if (!"Todos".equals(categoria)) {
+                pstm.setString(3, categoria);
+            }
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    numRegistros = rs.getInt("registros");
+                }
+            }
+
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar productos.", ex);
+        }
+
+        return numRegistros;
+    }
+
 }

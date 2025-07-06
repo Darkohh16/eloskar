@@ -2,6 +2,7 @@ package com.eloskar.restaurante.controller.Productos;
 
 import com.eloskar.restaurante.DTO.CategoriaDTO;
 import com.eloskar.restaurante.DTO.ProductoDTO;
+import com.eloskar.restaurante.services.ProductoService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,13 +28,14 @@ public class SrvActualizarDispProducto extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductoDTO dto = new ProductoDTO();
-        dto.setIdProd(Integer.parseInt(request.getParameter("id")));
-        dto.setDisponible(!Boolean.parseBoolean(request.getParameter("disponible")));
+        int id = Integer.parseInt(request.getParameter("id"));
+        boolean disponible = !Boolean.parseBoolean(request.getParameter("disponible"));
 
-        if (dto.actualizarDispProd()){
+        ProductoService service = new ProductoService();
+        if (service.actualizarDispProd(id, disponible)){
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Disponibilidad producto actualizado con éxito'); window.location='jsp/dashboardJSP/Productos.jsp';</script>");
+            response.getWriter().write("<script>alert('Disponibilidad producto actualizado con éxito'); " +
+                    "window.location='SrvBuscarProducto';</script>");
         }
     }
 }

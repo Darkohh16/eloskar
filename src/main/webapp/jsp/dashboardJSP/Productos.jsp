@@ -11,11 +11,10 @@
 <%
     List<ProductoDTO> productos = (List<ProductoDTO>) request.getAttribute("producto");
     String d, a;
-    if (productos == null) {
-        response.sendRedirect(request.getContextPath() + "/SrvBuscarProducto?ruta=/jsp/dashboardJSP/Productos.jsp");
-        return;
-    }
     List<CategoriaDTO> categorias = (List<CategoriaDTO>) request.getAttribute("categoria");
+    int totalPaginas = (int)request.getAttribute("totalPag");
+    int paginaActual = (int)request.getAttribute("pagina");
+
 %>
 
 <html lang="es">
@@ -45,14 +44,18 @@
             <div class="filters-bar">
                 <button class="btn-accion agregar">Agregar Producto</button>
                 <form method="get" action="SrvBuscarProducto" class="filters-form">
-                    <input type="text" name = "filtro" placeholder="Buscar por nombre o descripcion..." class="input-search">
-                    <select  id="edit-catF" name="catF">
-                        <option value="Todos">Todos</option>
+                    <input type="text" name="filtro" placeholder="Buscar por nombre o descripcion..." 
+                           class="input-search" value="<%= request.getAttribute("filtro") != null ? request.getAttribute("filtro") : "" %>">
+                    <select id="edit-catF" name="catF">
+                        <option value="Todos" <%= "Todos".equals(request.getAttribute("catF")) ? "selected" : "" %>>Todos</option>
                         <%
                             if (categorias != null) {
                                 for(CategoriaDTO c : categorias) {
                         %>
-                        <option value="<%= c.getNombre() %>"> <%= c.getNombre() %> </option>
+                        <option value="<%= c.getNombre() %>" 
+                                <%= c.getNombre().equals(request.getAttribute("catF")) ? "selected" : "" %>>
+                            <%= c.getNombre() %>
+                        </option>
                         <%
                                 }
                             }
@@ -177,6 +180,24 @@
 
                 </tbody>
             </table>
+
+            <div class="pagination">
+                <form method="get" action="SrvBuscarProducto" class="filters-form">
+                    <input type="hidden" name="filtro" value="<%= request.getAttribute("filtro") != null ? request.getAttribute("filtro") : "" %>">
+                    <input type="hidden" name="catF" value="<%= request.getAttribute("catF") != null ? request.getAttribute("catF") : "Todos" %>">
+                    <%
+                        for (int i = 1; i <= totalPaginas; i++) {
+                            if (i == paginaActual) {
+                    %>
+                    <button type="button" class="btn-page active"><%= i %></button>
+                    <%  } else { %>
+                    <button type="submit" name="pagina" value="<%= i %>" class="btn-page">
+                        <%= i %>
+                    </button>
+                    <%  }
+                    } %>
+                </form>
+            </div>
         </section>
     </main>
 </div>

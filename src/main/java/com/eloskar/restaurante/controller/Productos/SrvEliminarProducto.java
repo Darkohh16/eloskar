@@ -2,6 +2,7 @@ package com.eloskar.restaurante.controller.Productos;
 
 import com.eloskar.restaurante.DTO.ProductoDTO;
 import com.eloskar.restaurante.DTO.UsuarioDTO;
+import com.eloskar.restaurante.services.ProductoService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,11 +28,13 @@ public class SrvEliminarProducto extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductoDTO dto = new ProductoDTO();
-        dto.setIdProd(Integer.parseInt(request.getParameter("idProd")));
-        if (dto.eliminarProd()){
+        int id = Integer.parseInt(request.getParameter("idProd"));
+
+        ProductoService service = new ProductoService();
+        if (service.eliminarProd(id)){
             response.setContentType("text/html");
-            response.getWriter().write("<script>alert('Producto Eliminado con éxito'); window.location='jsp/dashboardJSP/Productos.jsp';</script>");
+            response.getWriter().write("<script>alert('Producto Eliminado con éxito'); " +
+                    "window.location='SrvBuscarProducto';</script>");
         }
     }
 }
