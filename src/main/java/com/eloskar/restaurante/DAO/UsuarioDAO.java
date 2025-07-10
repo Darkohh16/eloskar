@@ -2,6 +2,7 @@ package com.eloskar.restaurante.DAO;
 
 import com.eloskar.restaurante.DTO.UsuarioDTO;
 import com.eloskar.restaurante.util.Conexion;
+import com.eloskar.restaurante.util.PoolConexion;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class UsuarioDAO {
     public int insertU(UsuarioDTO dto) {
         String sql = "INSERT INTO usuarios (dni, celular, nombre, correo, rol, password) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = Conexion.getConnection();
+        try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
             pstm.setString(1, dto.getDni());
@@ -38,7 +39,7 @@ public class UsuarioDAO {
             sql.append(", password = ?");
         }
         sql.append(" WHERE idUser = ?");
-        try (Connection con = Conexion.getConnection();
+        try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql.toString())) {
 
             pstm.setString(1, dto.getDni());
@@ -64,7 +65,7 @@ public class UsuarioDAO {
     public int deleteU(int id) {
         String sql = "DELETE usuarios WHERE idUser = ?";
 
-        try (Connection con = Conexion.getConnection();
+        try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
             pstm.setInt(1, id);
@@ -82,7 +83,7 @@ public class UsuarioDAO {
                 + "nombre LIKE ? OR correo LIKE ? OR dni LIKE ?";
         List<UsuarioDTO> usuarios = new ArrayList<>();
 
-        try (Connection con = Conexion.getConnection();
+        try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
             pstm.setString(1, "%" + filtro + "%");
@@ -107,6 +108,49 @@ public class UsuarioDAO {
         }
 
         return usuarios;
+    }
+
+    public int login(String correo, String password) {
+        String sql = "SELECT idUser FROM usuarios WHERE correo = ? AND password = ?";
+        int idUser=0;
+
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql)) {
+
+            pstm.setString(1, correo);
+            pstm.setString(2, password);
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    idUser = rs.getInt("idUser");
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al cargar usuario", ex);
+        }
+
+        return idUser;
+    }
+
+    public String buscarPrivilegios(int idUser) {
+        String sql = "SELECT rol FROM usuarios WHERE idUser = ?";
+        String rol = "";
+
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql)) {
+
+            pstm.setInt(1, idUser);
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    rol = rs.getString("rol");
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al cargar rol", ex);
+        }
+
+        return rol;
     }
 
 }

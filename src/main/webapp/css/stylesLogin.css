@@ -1,0 +1,119 @@
+:root {
+    --celeste-claro: #96dafa;
+    --naranja: #ec9a1e;
+    --naranja-hover: #fb8c00;
+    --blanco: #ffffff;
+    --gris: #666666;
+    --azul-oscuro: #00334d;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Radley", sans-serif;
+}
+
+body {
+    background-color: var(--celeste-claro);
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 100vh;
+}
+
+.centrado {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex: 1;
+    padding: 40px 20px;
+    width: 100%;
+}
+
+.card {
+    background-color: var(--blanco);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 480px;
+}
+
+.titulo {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--azul-oscuro);
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    width: 140px;
+    height: auto;
+}
+
+.input-text {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #222;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+}
+
+.input-text::placeholder {
+    font-family: "Radley", serif;
+    font-size: 14px;
+    color: #999;
+    font-weight: normal;
+}
+
+.boton {
+    background-color: var(--naranja);
+    color: var(--blanco);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    width: 100%;
+}
+
+.boton:hover {
+    background-color: var(--naranja-hover);
+}
+
+.texto-secundario {
+    font-size: 14px;
+    color: var(--gris);
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* 🔵 Enlaces personalizados */
+.links a {
+    color: var(--azul-oscuro);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.links a:hover {
+    color: var(--naranja-hover);
+}
+
+@media (max-width: 600px) {
+    .logo {
+        width: 100px;
+    }
+}

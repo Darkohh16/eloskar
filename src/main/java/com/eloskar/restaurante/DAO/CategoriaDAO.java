@@ -3,6 +3,7 @@ package com.eloskar.restaurante.DAO;
 import com.eloskar.restaurante.DTO.CategoriaDTO;
 import com.eloskar.restaurante.DTO.UsuarioDTO;
 import com.eloskar.restaurante.util.Conexion;
+import com.eloskar.restaurante.util.PoolConexion;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +17,7 @@ public class CategoriaDAO {
         String sql = "SELECT idCat, nombre, descripcion FROM categorias;";
         List<CategoriaDTO> categorias = new ArrayList<>();
 
-        try (Connection con = Conexion.getConnection();
+        try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql);
              ResultSet rs = pstm.executeQuery()) {
 

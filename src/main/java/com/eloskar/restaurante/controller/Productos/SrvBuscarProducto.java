@@ -30,8 +30,9 @@ public class SrvBuscarProducto extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String destino = request.getParameter("destino");
+
         //PRODUCTOS============================================================
-        String rutaP = request.getParameter("ruta");
         String filtro = request.getParameter("filtro");
         String cat = request.getParameter("catF");
         String pagina = request.getParameter("pagina");
@@ -40,34 +41,47 @@ public class SrvBuscarProducto extends HttpServlet {
         
         int pag;
         int totalPag;
-        int entradasMax = 5;
+        int entradasMax;
+        if ("dashboard".equals(destino)) {
+            entradasMax = 5;
+        } else {
+            entradasMax = Integer.MAX_VALUE;
+        }
+
         
-        // Manejo de página
-        if (pagina == null) {
+        // Manejo de página con validación
+        if (pagina == null || pagina.trim().isEmpty()) {
             pag = 1;
         } else {
             try {
-                pag = Integer.parseInt(pagina);
+                pag = Integer.parseInt(pagina.trim());
+                if (pag < 1) pag = 1;
             } catch (NumberFormatException e) {
                 pag = 1;
             }
         }
         
-        // Manejo de filtro - usar filtroF si está disponible (para paginación)
-        if (filtroF != null && !filtroF.isEmpty()) {
-            filtro = filtroF;
-        } else if (filtro == null) {
+        // Optimizar manejo de filtros
+        if (filtroF != null && !filtroF.trim().isEmpty()) {
+            filtro = filtroF.trim();
+        } else if (filtro != null) {
+            filtro = filtro.trim();
+        } else {
             filtro = "";
         }
         
-        // Manejo de categoría - usar catFiltro si está disponible (para paginación)
-        if (catFiltro != null && !catFiltro.isEmpty()) {
-            cat = catFiltro;
-        } else if (cat == null) {
+        // Optimizar manejo de categoría
+        if (catFiltro != null && !catFiltro.trim().isEmpty()) {
+            cat = catFiltro.trim();
+        } else if (cat != null) {
+            cat = cat.trim();
+        } else {
             cat = "Todos";
         }
 
         ProductoService service = new ProductoService();
+        
+        // Calcular total de páginas
         totalPag = service.totalProductos(entradasMax, filtro, cat);
         
         // Validar que la página no exceda el total
@@ -75,6 +89,7 @@ public class SrvBuscarProducto extends HttpServlet {
             pag = 1;
         }
         
+        // Cargar productos
         List<ProductoDTO> productos = service.cargarDatosProductos(filtro, cat, pag, entradasMax);
 
         //CATEGORIAS===========================================================
@@ -82,13 +97,28 @@ public class SrvBuscarProducto extends HttpServlet {
         List<CategoriaDTO> categorias = categ.cargarDatosCat();
 
         //DEPLOY============================================================
-        request.setAttribute("producto", productos);//Mostrar productos
-        request.setAttribute("categoria", categorias);//Mostrar lista categorias en filtro
+        request.setAttribute("producto", productos);
+        request.setAttribute("categoria", categorias);
         request.setAttribute("catF", cat);
         request.setAttribute("totalPag", totalPag);
         request.setAttribute("pagina", pag);
         request.setAttribute("filtro", filtro);
-        RequestDispatcher dp = request.getRequestDispatcher("/jsp/dashboardJSP/Productos.jsp");
+        
+//        RequestDispatcher dp = request.getRequestDispatcher("/jsp/dashboardJSP/Productos.jsp");
+//        dp.forward(request, response);
+
+        // Determinar el destino
+        String jspPath;
+
+        if ("dashboard".equals(destino)) {
+            jspPath = "/jsp/dashboardJSP/Productos.jsp";
+        } else {
+            jspPath = "/jsp/eloskarJSP/index.jsp";
+        }
+
+        request.setAttribute("jspPath", jspPath);
+
+        RequestDispatcher dp = request.getRequestDispatcher(jspPath);
         dp.forward(request, response);
     }
 }

@@ -44,6 +44,7 @@
             <div class="filters-bar">
                 <button class="btn-accion agregar">Agregar Producto</button>
                 <form method="get" action="SrvBuscarProducto" class="filters-form">
+                    <input type="hidden" name="destino" value="dashboard">
                     <input type="text" name="filtro" placeholder="Buscar por nombre o descripcion..." 
                            class="input-search" value="<%= request.getAttribute("filtro") != null ? request.getAttribute("filtro") : "" %>">
                     <select id="edit-catF" name="catF">
@@ -183,6 +184,7 @@
 
             <div class="pagination">
                 <form method="get" action="SrvBuscarProducto" class="filters-form">
+                    <input type="hidden" name="destino" value="dashboard">
                     <input type="hidden" name="filtro" value="<%= request.getAttribute("filtro") != null ? request.getAttribute("filtro") : "" %>">
                     <input type="hidden" name="catF" value="<%= request.getAttribute("catF") != null ? request.getAttribute("catF") : "Todos" %>">
                     <%

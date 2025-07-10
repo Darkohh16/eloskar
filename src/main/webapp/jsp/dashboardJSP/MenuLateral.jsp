@@ -17,10 +17,10 @@
       <li><a href="jsp/dashboardJSP/DashboardPrincipal.jsp">Dashboard</a></li>
       <li><a href="jsp/dashboardJSP/Reservas.jsp">Reservas</a></li>
       <li><a href="jsp/dashboardJSP/Pedidos.jsp">Pedidos</a></li>
-      <li><a href="SrvBuscarProducto">Productos</a></li>
+      <li><a href="SrvBuscarProducto?destino=dashboard">Productos</a></li>
       <li><a href="SrvBuscarUsuario">Usuarios</a></li>
       <li><a href="jsp/dashboardJSP/Reportes.jsp">Reportes</a></li>
-      <li><a href="jsp/eloskarJSP/index.jsp">Volver al inicio</a></li>
+      <li><a href="SrvBuscarProducto">Volver al inicio</a></li>
     </ul>
   </nav>
 </aside>

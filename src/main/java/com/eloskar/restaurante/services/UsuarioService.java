@@ -47,5 +47,15 @@ public class UsuarioService {
         }
         return usuarioDAO.buscarTodosU(filtro);
     }
+
+    public int validarLogin(String correo, String password){
+
+        return usuarioDAO.login(correo, password);
+    }
+
+    public String obtenerRol(int idUser){
+
+        return usuarioDAO.buscarPrivilegios(idUser);
+    }
 }
 

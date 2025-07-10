@@ -3,6 +3,7 @@ package com.eloskar.restaurante.DAO;
 import com.eloskar.restaurante.DTO.CategoriaDTO;
 import com.eloskar.restaurante.DTO.ProductoDTO;
 import com.eloskar.restaurante.util.Conexion;
+import com.eloskar.restaurante.util.PoolConexion;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +17,7 @@ public class ProductoDAO {
         String sql = "INSERT INTO productos (nombre, descripcion, precio, imagen, disponible, categoria_id) " +
                 "VALUES (?, ?, ?, ?, ?, (SELECT idCat FROM categorias WHERE nombre = ?))";
 
-        try (Connection con = Conexion.getConnection();
+        try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
             pstm.setString(1, dto.getNombre());
@@ -38,7 +39,7 @@ public class ProductoDAO {
         String sql = "UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, imagen = ?, categoria_id = " +
                 "(SELECT idCat FROM categorias WHERE nombre = ?) WHERE idProd = ?;";
 
-        try (Connection con = Conexion.getConnection();
+        try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
             pstm.setString(1, dto.getNombre());
@@ -58,13 +59,19 @@ public class ProductoDAO {
     public int updateDispProd(int id, boolean disponible) {
         String sql = "UPDATE productos SET disponible = ? WHERE idProd = ?;";
 
-        try (Connection con = Conexion.getConnection();
+        try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
             pstm.setBoolean(1, disponible);
             pstm.setInt(2, id);
 
-            return pstm.executeUpdate();
+            //=======================================
+            int updated = pstm.executeUpdate();
+            if (updated == 0) {
+                throw new RuntimeException("No se actualizó ningún producto. ID no encontrado.");
+            }
+            return updated;
+            //=======================================
 
         } catch (SQLException ex) {
             throw new RuntimeException("Error al actualizar disponibilidad producto: " + ex.getMessage(), ex);
@@ -74,7 +81,7 @@ public class ProductoDAO {
     public int deleteProd(int id) {
         String sql = "DELETE productos WHERE idProd = ?";
 
-        try (Connection con = Conexion.getConnection();
+        try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
 
             pstm.setInt(1, id);
@@ -90,24 +97,37 @@ public class ProductoDAO {
     public List<ProductoDTO> buscarTodosProd(String filtro, String cate, int pagina, int entradasMax, int offset) {
         StringBuilder sql = new StringBuilder("SELECT p.idProd, p.nombre, c.nombre AS cate, c.idCat AS idcate, c.descripcion AS descate, p.descripcion, "
                 + "p.precio, p.disponible, p.imagen FROM productos p "
-                + "INNER JOIN categorias c ON p.categoria_id = c.idCat "
-                + "WHERE (p.nombre LIKE ? OR p.descripcion LIKE ?) ");
+                + "INNER JOIN categorias c ON p.categoria_id = c.idCat ");
         
-        // Agregar condición de categoría solo si no es "Todos"
-        if (!"Todos".equals(cate)) {
-            sql.append("AND c.nombre = ? ");
+        // Optimizar la condición WHERE - priorizar búsquedas por nombre
+        if (filtro == null || filtro.trim().isEmpty()) {
+            // Si no hay filtro, solo filtrar por categoría
+            if (!"Todos".equals(cate)) {
+                sql.append("WHERE c.nombre = ? ");
+            }
+        } else {
+            // Si hay filtro, usar LIKE optimizado - priorizar nombre sobre descripción
+            sql.append("WHERE (p.nombre LIKE ? OR p.descripcion LIKE ?) ");
+            if (!"Todos".equals(cate)) {
+                sql.append("AND c.nombre = ? ");
+            }
         }
         
         sql.append("ORDER BY p.idProd OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
         
         List<ProductoDTO> productos = new ArrayList<>();
 
-        try (Connection con = Conexion.getConnection();
+        try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql.toString())) {
             
             int paramIndex = 1;
-            pstm.setString(paramIndex++, "%" + filtro + "%");
-            pstm.setString(paramIndex++, "%" + filtro + "%");
+            
+            if (filtro != null && !filtro.trim().isEmpty()) {
+                // Usar filtro más específico para mejor rendimiento
+                String filtroOptimizado = "%" + filtro.trim() + "%";
+                pstm.setString(paramIndex++, filtroOptimizado);
+                pstm.setString(paramIndex++, filtroOptimizado);
+            }
             
             // Agregar parámetro de categoría solo si no es "Todos"
             if (!"Todos".equals(cate)) {
@@ -145,22 +165,35 @@ public class ProductoDAO {
     public int obtNumProductos(String filtro, String categoria) {
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) AS registros FROM productos p ");
         sql.append("INNER JOIN categorias c ON p.categoria_id = c.idCat ");
-        sql.append("WHERE (p.nombre LIKE ? OR p.descripcion LIKE ?) ");
         
-        if (!"Todos".equals(categoria)) {
-            sql.append("AND c.nombre = ?");
+        // Optimizar la condición WHERE
+        if (filtro == null || filtro.trim().isEmpty()) {
+            // Si no hay filtro, solo contar por categoría
+            if (!"Todos".equals(categoria)) {
+                sql.append("WHERE c.nombre = ?");
+            }
+        } else {
+            // Si hay filtro, usar LIKE optimizado
+            sql.append("WHERE (p.nombre LIKE ? OR p.descripcion LIKE ?) ");
+            if (!"Todos".equals(categoria)) {
+                sql.append("AND c.nombre = ?");
+            }
         }
         
         int numRegistros = 0;
 
-        try (Connection con = Conexion.getConnection();
+        try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql.toString())) {
 
-            pstm.setString(1, "%" + filtro + "%");
-            pstm.setString(2, "%" + filtro + "%");
+            int paramIndex = 1;
+            
+            if (filtro != null && !filtro.trim().isEmpty()) {
+                pstm.setString(paramIndex++, "%" + filtro + "%");
+                pstm.setString(paramIndex++, "%" + filtro + "%");
+            }
             
             if (!"Todos".equals(categoria)) {
-                pstm.setString(3, categoria);
+                pstm.setString(paramIndex, categoria);
             }
 
             try (ResultSet rs = pstm.executeQuery()) {
