@@ -46,10 +46,10 @@
       }
     %>
     <a href="#">Inicio</a>
-    <a href="#">Carta</a>
+    <a href="SrvBuscarProducto">Carta</a>
     <a href="#">Reservas</a>
     <a href="#">Contacto</a>
-    <a href="#" class="cart">Carrito <span class="cart-badge">1</span></a>
+    <a href="jsp/eloskarJSP/carrito.jsp" class="cart">Carrito <span class="cart-badge">0</span></a>
     <%
       if (session.getAttribute("idUser") == null) {
     %>
@@ -93,7 +93,7 @@
           <% } %>
 
           <% if (p.isDisponible()) { %>
-          <button class="add-cart">
+          <button class="add-cart" onclick="agregarAlCarrito(<%= p.getIdProd() %>)">
             <i class="icon-cart"></i>
           </button>
           <% } %>
@@ -127,6 +127,7 @@
 </footer>
 
 <script src="script.js"></script>
+<script src="js/scriptCarrito.js"></script>
 </body>
 </html>
 
