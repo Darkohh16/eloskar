@@ -28,7 +28,9 @@
                 <img src="img/logo.png" alt="Logo El Oskar" class="logo" />
             </div>
 
-            <form action="#" method="POST">
+            <form action="SrvAgregarUsuario" method="POST">
+                <input type="hidden" name="origen" value="publico" />
+
                 <input
                         class="input-text"
                         type="text"

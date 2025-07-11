@@ -3,6 +3,7 @@ package com.eloskar.restaurante.controller.Productos;
 import com.eloskar.restaurante.DTO.CategoriaDTO;
 import com.eloskar.restaurante.DTO.ProductoDTO;
 import com.eloskar.restaurante.services.ProductoService;
+import com.eloskar.restaurante.util.Seguridad;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -28,6 +29,10 @@ public class SrvActualizarDispProducto extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (!Seguridad.verificarAccesoAdmin(request, response)) {
+            return; // Se redirigió por falta de sesión o acceso
+        }
+
         int id = Integer.parseInt(request.getParameter("id"));
         boolean disponible = !Boolean.parseBoolean(request.getParameter("disponible"));
 

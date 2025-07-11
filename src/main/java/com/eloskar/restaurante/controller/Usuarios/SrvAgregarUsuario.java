@@ -35,11 +35,20 @@ public class SrvAgregarUsuario extends HttpServlet {
         dto.setCorreo(request.getParameter("correo"));
         dto.setPassword(request.getParameter("password"));
 
+        String origen = request.getParameter("origen");
+        String redirectURL;
+
+        if ("publico".equalsIgnoreCase(origen)) {
+            redirectURL = request.getContextPath() + "/jsp/eloskarJSP/login/login.jsp"; // Volver a login
+        } else {
+            redirectURL = "SrvBuscarUsuario"; // Mantenerse en dashboard
+        }
+
         UsuarioService service = new UsuarioService();
         if (service.insertarU(dto)){
             response.setContentType("text/html");
             response.getWriter().write("<script>alert('Usuario registrado con éxito'); " +
-                    "window.location='SrvBuscarUsuario';</script>");
+                    "window.location='" + redirectURL + "';</script>");
         }
     }
 }

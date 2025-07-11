@@ -6,6 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String token = request.getParameter("token");
+%>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -27,7 +31,8 @@
                 <img src="img/logo.png" alt="Logo El Oskar" class="logo" />
             </div>
 
-            <form action="#" method="POST">
+            <form action="SrvCambiarContrasenia" method="POST">
+                <input type="hidden" name="token" value="<%= token %>" />
                 <input
                         class="input-text"
                         type="password"
@@ -44,6 +49,7 @@
                 />
                 <button class="boton" type="submit">Guardar contraseña</button>
             </form>
+
 
             <div class="texto-secundario links" style="margin-top: 15px">
                 <a href="jsp/eloskarJSP/login/login.jsp">Volver al inicio de sesión</a>

@@ -34,7 +34,7 @@
         restablecer tu contraseña.
       </p>
 
-      <form action="jsp/eloskarJSP/login/mensaje.jsp" method="POST">
+      <form action="SrvEnviarRecuperacion" method="POST">
         <input
                 class="input-text"
                 type="email"

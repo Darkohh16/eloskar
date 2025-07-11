@@ -61,8 +61,17 @@
     <%
       }
     %>
+
     <%-- Para pruebas --%>
+    <%
+      if (session != null) {
+        if (rol.equals("admin")) {
+    %>
     <a href="SrvCerrarSesion" class="cerrarMomentaneo">Cerrar Sesion</a>
+    <%
+        }
+      }
+    %>
   </nav>
 </header>
 

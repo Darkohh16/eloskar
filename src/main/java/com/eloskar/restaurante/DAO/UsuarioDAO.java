@@ -153,4 +153,66 @@ public class UsuarioDAO {
         return rol;
     }
 
+    public int buscarCorreo(String correo) {
+        String sql = "SELECT idUser FROM usuarios WHERE correo = ?";
+        int idUser=0;
+
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql)) {
+
+            pstm.setString(1, correo);
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    idUser = rs.getInt("idUser");
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al cargar usuario", ex);
+        }
+
+        return idUser;
+    }
+
+    public UsuarioDTO buscarU(int idUser) {
+        String sql = "SELECT nombre, dni, correo, celular FROM usuarios WHERE idUser = ?";
+
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql)) {
+
+            pstm.setInt(1, idUser);
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    UsuarioDTO dto = new UsuarioDTO();
+                    dto.setNombre(rs.getString("nombre"));
+                    dto.setDni(rs.getString("dni"));
+                    dto.setCorreo(rs.getString("correo"));
+                    dto.setCel(rs.getString("celular"));
+
+                    return dto;
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al cargar usuarios", ex);
+        }
+
+        return null;
+    }
+
+    public int updatePass(int idUser, String password) {
+        String sql = "UPDATE usuarios SET password = ? WHERE idUser = ?";
+
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql)) {
+
+            pstm.setString(1, password);
+            pstm.setInt(2, idUser);
+
+            return pstm.executeUpdate();
+
+        } catch  (SQLException ex) {
+            throw new RuntimeException("Error al actualizar contraseña: " + ex.getMessage(), ex);
+        }
+    }
 }

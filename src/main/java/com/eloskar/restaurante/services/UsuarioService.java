@@ -57,5 +57,19 @@ public class UsuarioService {
 
         return usuarioDAO.buscarPrivilegios(idUser);
     }
+
+    public int obtenerId(String correo){
+
+        return usuarioDAO.buscarCorreo(correo);
+    }
+
+    public UsuarioDTO obtenerDatosRecuperacion(int idUser){
+
+        return usuarioDAO.buscarU(idUser);
+    }
+
+    public boolean cambiarPass(int idUser, String password){
+        return usuarioDAO.updatePass(idUser, password) > 0;
+    }
 }
 

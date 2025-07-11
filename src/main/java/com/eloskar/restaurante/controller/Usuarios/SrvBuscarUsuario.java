@@ -34,7 +34,6 @@ public class SrvBuscarUsuario extends HttpServlet {
             filtro = "";
         }
 
-        UsuarioDTO user = new UsuarioDTO();
         UsuarioService service = new UsuarioService();
         List<UsuarioDTO> usuarios = service.cargarDatosUsuarios(filtro);
 

@@ -24,7 +24,7 @@
       <h1 class="titulo">¡Revisa tu correo!</h1>
 
       <div style="text-align: center; margin-bottom: 25px">
-        <img src="img/logo-eloskar.png" alt="Logo El Oskar" class="logo" />
+        <img src="img/logo.png" alt="Logo El Oskar" class="logo" />
       </div>
 
       <p
@@ -32,7 +32,7 @@
               style="text-align: center; font-size: 16px"
       >
         Te hemos enviado un enlace para restablecer tu contraseña. Si no lo
-        ves, revisa tu bandeja de spam.
+        ves, revisa tu bandeja de spam o verifica que el correo ingresado sea el correcto.
       </p>
 
       <div
