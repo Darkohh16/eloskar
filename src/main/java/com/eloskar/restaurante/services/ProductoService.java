@@ -66,4 +66,7 @@ public class ProductoService {
         return total;
     }
 
+    public ProductoDTO obtenerProductoPorId(int idProd) {
+        return productoDAO.buscarProdPorId(idProd);
+    }
 }

@@ -43,7 +43,7 @@ public class SrvAgregarProducto extends HttpServlet {
         if (service.insertarProd(dto)){
             response.setContentType("text/html");
             response.getWriter().write("<script>alert('Producto registrado con éxito'); " +
-                    "window.location='SrvBuscarProducto';</script>");
+                    "window.location='SrvBuscarProducto?destino=dashboard';</script>");
         }
     }
 }

@@ -209,4 +209,32 @@ public class ProductoDAO {
         return numRegistros;
     }
 
+    public ProductoDTO buscarProdPorId(int idProd) {
+        String sql = "SELECT p.idProd, p.nombre, c.nombre AS cate, c.idCat AS idcate, c.descripcion AS descate, p.descripcion, p.precio, p.disponible, p.imagen FROM productos p INNER JOIN categorias c ON p.categoria_id = c.idCat WHERE p.idProd = ?";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql)) {
+            pstm.setInt(1, idProd);
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    CategoriaDTO dtoC = new CategoriaDTO();
+                    dtoC.setIdCat(rs.getInt("idcate"));
+                    dtoC.setNombre(rs.getString("cate"));
+                    dtoC.setDecripcion(rs.getString("descate"));
+
+                    ProductoDTO dto = new ProductoDTO();
+                    dto.setIdProd(rs.getInt("idProd"));
+                    dto.setNombre(rs.getString("nombre"));
+                    dto.setDescripcion(rs.getString("descripcion"));
+                    dto.setPrecio(rs.getFloat("precio"));
+                    dto.setDisponible(rs.getBoolean("disponible"));
+                    dto.setImagen(rs.getString("imagen"));
+                    dto.setCategoria(dtoC);
+                    return dto;
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al buscar producto por ID", ex);
+        }
+        return null;
+    }
 }

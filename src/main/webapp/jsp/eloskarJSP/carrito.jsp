@@ -1,14 +1,14 @@
+<%@ page import="com.eloskar.restaurante.DTO.CarritoDTO" %>
+<%@ page import="com.eloskar.restaurante.DTO.CarritoDetalleDTO" %>
+<%@ page import="com.eloskar.restaurante.DTO.ProductoDTO" %>
+<%@ page import="com.eloskar.restaurante.services.ProductoService" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <%
-  int idUser;
-  String rol = "";
-  if (session != null && session.getAttribute("idUser") != null) {
-    idUser = (Integer) session.getAttribute("idUser");
-    rol = (String) session.getAttribute("rol");
-  }
+  CarritoDTO carrito = (CarritoDTO) request.getAttribute("carrito");
+  List<CarritoDetalleDTO> detalles = carrito != null ? carrito.getDetalles() : null;
+  ProductoService productoService = new ProductoService();
 %>
-
 <html lang="es">
 <head>
   <base href="${pageContext.request.contextPath}/">
@@ -21,41 +21,8 @@
 </head>
 <body data-context-path="${pageContext.request.contextPath}" data-user-id="<%= session.getAttribute("idUser") != null ? session.getAttribute("idUser") : "" %>">
 
-<!-- Header -->
-<header class="header">
-  <div class="logo">
-    <img src="img/logo.png" alt="El Oskar">
-    <span>El Oskar</span>
-  </div>
-  <nav class="nav">
-    <%
-      if (session != null) {
-        if (rol.equals("admin")) {
-    %>
-        <a href="jsp/dashboardJSP/DashboardPrincipal.jsp">Dashboard</a>
-    <%
-        }
-      }
-    %>
-    <a href="#">Inicio</a>
-    <a href="SrvBuscarProducto">Carta</a>
-    <a href="#">Reservas</a>
-    <a href="#">Contacto</a>
-    <a href="jsp/eloskarJSP/carrito.jsp" class="cart active">Carrito <span class="cart-badge">3</span></a>
-    <%
-      if (session.getAttribute("idUser") == null) {
-    %>
-        <a href="jsp/eloskarJSP/login/login.jsp" class="account">Mi Cuenta</a>
-    <%
-      } else {
-    %>
-        <a href="#" class="account">Mi Cuenta</a>
-    <%
-      }
-    %>
-    <a href="SrvCerrarSesion" class="cerrarMomentaneo">Cerrar Sesion</a>
-  </nav>
-</header>
+<!-- Include Header -->
+<jsp:include page="components/header.jsp" />
 
 <!-- Contenido principal -->
 <main class="carrito-main">
@@ -65,73 +32,52 @@
     <div class="carrito-content">
       <!-- Lista de productos -->
       <div class="productos-lista">
-        <h2>Productos (3)</h2>
-        
-        <!-- Producto 1 -->
-        <div class="producto-item" data-producto-id="1">
+        <h2>Productos (<%= detalles != null ? detalles.size() : 0 %>)</h2>
+        <% 
+          double subtotal = 0;
+          if (detalles != null && !detalles.isEmpty()) {
+            for (CarritoDetalleDTO det : detalles) {
+              ProductoDTO prod = productoService.obtenerProductoPorId(det.getProducto_id());
+              if (prod == null) continue;
+              double precio = prod.getPrecio();
+              subtotal += precio * det.getCantidad();
+        %>
+        <div class="producto-item" data-producto-id="<%= prod.getIdProd() %>">
           <div class="producto-imagen">
-            <img src="img/ceviche_clasico.jpg" alt="Ceviche Clásico">
+            <img src="<%= prod.getImagen() %>" alt="<%= prod.getNombre() %>">
           </div>
           <div class="producto-info">
-            <h3>Ceviche Clásico</h3>
-            <p>Pescado fresco marinado en limón con cebolla, cilantro y ají limo</p>
+            <h3><%= prod.getNombre() %></h3>
+            <p><%= prod.getDescripcion() %></p>
             <div class="producto-precio">
-              <span class="precio" data-precio-unitario="25.00">S/. 25.00</span>
+              <span class="precio" data-precio-unitario="<%= precio %>">S/. <%= precio %></span>
             </div>
           </div>
           <div class="producto-acciones">
-            <button class="btn-cantidad" >-</button>
-            <span class="cantidad">1</span>
-            <button class="btn-cantidad" >+</button>
-            <button class="btn-eliminar" >
-              <span class="icon-eliminar">🗑️</span>
-            </button>
+            <form action="SrvActualizarDetalleCarrito" method="post" style="display:inline;">
+              <input type="hidden" name="idDetalle" value="<%= det.getIdDetalle() %>"/>
+              <input type="hidden" name="cantidad" value="<%= det.getCantidad() %>"/>
+              <button name="accion" value="restar" class="btn-cantidad">-</button>
+            </form>
+            <span class="cantidad"><%= det.getCantidad() %></span>
+            <form action="SrvActualizarDetalleCarrito" method="post" style="display:inline;">
+              <input type="hidden" name="idDetalle" value="<%= det.getIdDetalle() %>"/>
+              <input type="hidden" name="cantidad" value="<%= det.getCantidad() %>"/>
+              <button name="accion" value="sumar" class="btn-cantidad">+</button>
+            </form>
+            <form action="SrvActualizarDetalleCarrito" method="post" style="display:inline;">
+              <input type="hidden" name="idDetalle" value="<%= det.getIdDetalle() %>"/>
+              <input type="hidden" name="cantidad" value="<%= det.getCantidad() %>"/>
+              <button name="accion" value="eliminar" class="btn-eliminar">
+                <span class="icon-eliminar">🗑️</span>
+              </button>
+            </form>
           </div>
         </div>
-        
-        <!-- Producto 2 -->
-        <div class="producto-item" data-producto-id="2">
-          <div class="producto-imagen">
-            <img src="img/tiradito.jpg" alt="Tiradito">
-          </div>
-          <div class="producto-info">
-            <h3>Tiradito</h3>
-            <p>Pescado fresco cortado fino con salsa de ají amarillo y limón</p>
-            <div class="producto-precio">
-              <span class="precio" data-precio-unitario="28.00">S/. 28.00</span>
-            </div>
-          </div>
-          <div class="producto-acciones">
-            <button class="btn-cantidad" >-</button>
-            <span class="cantidad">2</span>
-            <button class="btn-cantidad" >+</button>
-            <button class="btn-eliminar" >
-              <span class="icon-eliminar">🗑️</span>
-            </button>
-          </div>
-        </div>
-        
-        <!-- Producto 3 -->
-        <div class="producto-item" data-producto-id="3">
-          <div class="producto-imagen">
-            <img src="img/pisco_sour.jpg" alt="Pisco Sour">
-          </div>
-          <div class="producto-info">
-            <h3>Pisco Sour</h3>
-            <p>Cóctel peruano con pisco, limón, azúcar y clara de huevo</p>
-            <div class="producto-precio">
-              <span class="precio" data-precio-unitario="15.00">S/. 15.00</span>
-            </div>
-          </div>
-          <div class="producto-acciones">
-            <button class="btn-cantidad" >-</button>
-            <span class="cantidad">1</span>
-            <button class="btn-cantidad" >+</button>
-            <button class="btn-eliminar" >
-              <span class="icon-eliminar">🗑️</span>
-            </button>
-          </div>
-        </div>
+        <%   }
+          } else { %>
+        <p>No hay productos en el carrito.</p>
+        <% } %>
       </div>
       
       <!-- Resumen del pedido -->
@@ -140,7 +86,7 @@
         
         <div class="resumen-item">
           <span>Subtotal:</span>
-          <span>S/. 93.00</span>
+          <span>S/. <%= subtotal %></span>
         </div>
         
         <div class="resumen-item">
@@ -150,7 +96,7 @@
         
         <div class="resumen-item total">
           <span>Total:</span>
-          <span>S/. 98.00</span>
+          <span>S/. <%= subtotal + 5 %></span>
         </div>
         
         <div class="opciones-entrega">
@@ -182,21 +128,8 @@
   </div>
 </main>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="footer-section">
-    <h4>Horario</h4>
-    <p>Lunes a Domingo<br>11:00 AM - 6:00 PM</p>
-  </div>
-  <div class="footer-section">
-    <h4>Ubicación</h4>
-    <p>Lima 204, Pimentel</p>
-  </div>
-  <div class="footer-section">
-    <h4>Contacto</h4>
-    <p>Tel: (01) 555-0123<br>Email: eloskar@cevicheria.com</p>
-  </div>
-</footer>
+<!-- Include Footer -->
+<jsp:include page="components/footer.jsp" />
 
 </body>
 </html> 
