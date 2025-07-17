@@ -14,6 +14,12 @@ public class ProductoService {
     }
 
     public boolean insertarProd(ProductoDTO dto){
+        // Validaciones
+        if (dto.getNombre() == null || dto.getNombre().trim().isEmpty()) return false;
+        if (dto.getPrecio() <= 0) return false;
+        if (dto.getCategoria() == null || dto.getCategoria().getNombre().isBlank()) return false;
+        if (dto.getDescripcion() == null || dto.getDescripcion().trim().isEmpty()) return false;
+        if (dto.getImagen() == null || dto.getImagen().trim().isEmpty()) return false;
         dto.setIdProd(dto.getIdProd());
         dto.setNombre(dto.getNombre());
         dto.setDescripcion(dto.getDescripcion());

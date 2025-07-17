@@ -26,7 +26,7 @@
     %>
     <a href="#">Inicio</a>
     <a href="SrvBuscarProducto">Carta</a>
-    <a href="#">Reservas</a>
+    <a href="jsp/eloskarJSP/reservas.jsp">Reservas</a>
     <a href="#">Contacto</a>
     <a href="SrvCarrito" class="cart">Carrito</a>
     <%
@@ -43,7 +43,7 @@
 
     <%-- Para pruebas --%>
     <%
-      if (session != null) {
+      if (session.getAttribute("idUser") != null) {
     %>
         <a href="SrvCerrarSesion" class="cerrarMomentaneo">Cerrar Sesion</a>
     <%

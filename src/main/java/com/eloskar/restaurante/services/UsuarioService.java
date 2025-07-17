@@ -13,6 +13,12 @@ public class UsuarioService {
     }
 
     public boolean insertarU(UsuarioDTO dto){
+        // Validaciones
+        if (dto.getDni() == null || dto.getDni().trim().isEmpty()) return false;
+        if (dto.getCel() == null || dto.getCel().trim().isEmpty()) return false;
+        if (dto.getNombre() == null || dto.getNombre().trim().isEmpty()) return false;
+        if (dto.getCorreo() == null || dto.getCorreo().trim().isEmpty()) return false;
+        if (dto.getPassword() == null || dto.getPassword().trim().isEmpty()) return false;
         dto.setDni(dto.getDni());
         dto.setCel(dto.getCel());
         dto.setNombre(dto.getNombre());
