@@ -26,7 +26,7 @@
     %>
     <a href="#">Inicio</a>
     <a href="SrvBuscarProducto">Carta</a>
-    <a href="jsp/eloskarJSP/reservas.jsp">Reservas</a>
+    <a href="SrvListarReservas">Reservas</a>
     <a href="#">Contacto</a>
     <a href="SrvCarrito" class="cart">Carrito</a>
     <%

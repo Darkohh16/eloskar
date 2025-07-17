@@ -23,7 +23,7 @@
 
   <section class="form-reserva-section" style="max-width: 600px; margin: 0 auto 40px auto;">
     <h2 style="color: #009fe3; margin-bottom: 18px;">Realizar una nueva reserva</h2>
-    <form id="formReserva" method="post" action="SrvReserva">
+    <form id="formReserva" method="post" action="SrvAgregarReserva">
       <div style="display: flex; gap: 18px; flex-wrap: wrap;">
         <div style="flex: 1 1 200px;">
           <label for="fecha">Fecha:</label>
@@ -54,23 +54,22 @@
       </tr>
       </thead>
       <tbody>
-      <%-- Aquí se debe iterar sobre la lista de reservas del usuario --%>
-      <%-- Ejemplo de fila estática --%>
+      <% 
+        java.util.List<com.eloskar.restaurante.DTO.ReservaDTO> reservas = (java.util.List<com.eloskar.restaurante.DTO.ReservaDTO>) request.getAttribute("reservasUsuario");
+        if (reservas != null && !reservas.isEmpty()) {
+          for (com.eloskar.restaurante.DTO.ReservaDTO r : reservas) {
+      %>
       <tr>
-        <td>1</td>
-        <td>2024-07-10</td>
-        <td>19:00</td>
-        <td>4</td>
-        <td><span class="estado pendiente">Pendiente</span></td>
+        <td><%= r.getIdReser() %></td>
+        <td><%= r.getFecha() %></td>
+        <td><%= r.getHora() != null && r.getHora().length() >= 5 ? r.getHora().substring(0,5) : r.getHora() %></td>
+        <td><%= r.getCantidad_personas() %></td>
+        <td><span class="estado <%= r.getEstado() %>"><%= r.getEstado().substring(0,1).toUpperCase() + r.getEstado().substring(1) %></span></td>
       </tr>
-      <tr>
-        <td>2</td>
-        <td>2024-07-12</td>
-        <td>20:30</td>
-        <td>2</td>
-        <td><span class="estado confirmada">Confirmada</span></td>
-      </tr>
-      <%-- Fin ejemplo --%>
+      <%   }
+        } else { %>
+      <tr><td colspan="5" style="text-align:center;">No tienes reservas registradas.</td></tr>
+      <% } %>
       </tbody>
     </table>
   </section>
