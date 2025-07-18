@@ -215,4 +215,29 @@ public class UsuarioDAO {
             throw new RuntimeException("Error al actualizar contraseña: " + ex.getMessage(), ex);
         }
     }
+
+    public int updatePerfil(UsuarioDTO dto) {
+        StringBuilder sql = new StringBuilder("UPDATE usuarios SET nombre = ?, correo = ?, celular = ?, dni = ?");
+        boolean pass = dto.getPassword() != null && !dto.getPassword().isBlank();
+        if (pass) {
+            sql.append(", password = ?");
+        }
+        sql.append(" WHERE idUser = ?");
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql.toString())) {
+            pstm.setString(1, dto.getNombre());
+            pstm.setString(2, dto.getCorreo());
+            pstm.setString(3, dto.getCel());
+            pstm.setString(4, dto.getDni());
+            int p = 5;
+            if (pass) {
+                pstm.setString(p, dto.getPassword());
+                p++;
+            }
+            pstm.setInt(p, dto.getIdUser());
+            return pstm.executeUpdate();
+        } catch (Exception ex) {
+            throw new RuntimeException("Error al actualizar perfil: " + ex.getMessage(), ex);
+        }
+    }
 }

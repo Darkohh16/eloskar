@@ -22,15 +22,34 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Modal de detalles de pedido (estático)
+// Modal de detalles de pedido (dinámico)
 document.addEventListener('DOMContentLoaded', function() {
   var modal = document.getElementById('modalDetalles');
   var cerrar = document.getElementById('cerrarModalDetalles');
   var botones = document.querySelectorAll('.btn-detalles');
-  if (modal && cerrar && botones.length > 0) {
+  var modalContent = modal ? modal.querySelector('.modal-detalles-content') : null;
+  if (modal && cerrar && botones.length > 0 && modalContent) {
     botones.forEach(function(btn) {
       btn.addEventListener('click', function() {
-        modal.classList.add('active');
+        var idPedido = btn.getAttribute('data-id');
+        if (idPedido) {
+          fetch('SrvVerDetallePedido?id=' + idPedido)
+            .then(resp => resp.text())
+            .then(html => {
+              // Solo reemplazo la tabla, mantengo el título y botón cerrar
+              var tabla = modalContent.querySelector('table');
+              if (tabla) tabla.remove();
+              var tempDiv = document.createElement('div');
+              tempDiv.innerHTML = html;
+              var nuevaTabla = tempDiv.querySelector('table');
+              if (nuevaTabla) {
+                modalContent.insertBefore(nuevaTabla, cerrar.nextSibling.nextSibling); // después del título
+              }
+              modal.classList.add('active');
+            });
+        } else {
+          modal.classList.add('active');
+        }
       });
     });
     cerrar.addEventListener('click', function() {

@@ -30,7 +30,7 @@
         <label for="dni">DNI:</label>
         <input type="text" id="dni" name="dni" value="<%= usuario != null ? usuario.getDni() : "" %>" required pattern="[0-9]{8}">
         <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" placeholder="••••••••">
+        <input type="password" id="password" name="password" placeholder="••••••••" required>
       </div>
       <button type="submit" class="btn-guardar">Guardar Cambios</button>
     </form>
@@ -54,11 +54,22 @@
              for (com.eloskar.restaurante.DTO.PedidoDTO p : pedidos) { %>
         <tr>
           <td><%= p.getIdPedid() %></td>
-          <td><%= p.getFecha() %></td>
+          <td>
+            <%
+              String fecha = p.getFecha();
+              String fechaSolo = "";
+              String horaMin = "";
+              if (fecha != null && fecha.length() >= 16) {
+                fechaSolo = fecha.substring(0, 10); // yyyy-MM-dd
+                horaMin = fecha.substring(11, 16); // HH:mm
+              }
+            %>
+            <%= fechaSolo %> <%= horaMin %>
+          </td>
           <td>S/ <%= p.getTotal() %></td>
           <td><span class="estado <%= p.getEstado() %>"><%= p.getEstado().substring(0,1).toUpperCase() + p.getEstado().substring(1) %></span></td>
           <td><%= p.getTipo_entrega() != null ? (p.getTipo_entrega().equals("pickup") ? "Recoger" : "Delivery") : "" %></td>
-          <td><button class="btn-detalles" type="button">Detalles</button></td>
+          <td><button class="btn-detalles" type="button" data-id="<%= p.getIdPedid() %>">Detalles</button></td>
         </tr>
         <%   }
            } else { %>
@@ -68,7 +79,7 @@
           <td>S/ 85.00</td>
           <td><span class="estado pendiente">Pendiente</span></td>
           <td>Delivery</td>
-          <td><button class="btn-detalles" type="button">Detalles</button></td>
+          <td><button class="btn-detalles" type="button" data-id="1001">Detalles</button></td>
         </tr>
         <tr>
           <td>1002</td>
@@ -76,7 +87,7 @@
           <td>S/ 120.00</td>
           <td><span class="estado entregado">Entregado</span></td>
           <td>Recoger</td>
-          <td><button class="btn-detalles" type="button">Detalles</button></td>
+          <td><button class="btn-detalles" type="button" data-id="1002">Detalles</button></td>
         </tr>
         <tr>
           <td>1003</td>
@@ -84,7 +95,7 @@
           <td>S/ 60.00</td>
           <td><span class="estado cancelada">Cancelada</span></td>
           <td>Delivery</td>
-          <td><button class="btn-detalles" type="button">Detalles</button></td>
+          <td><button class="btn-detalles" type="button" data-id="1003">Detalles</button></td>
         </tr>
         <% } %>
       </tbody>

@@ -6,6 +6,7 @@ public class PedidoDetalleDTO {
     private int plato_id;
     private int cantidad;
     private double precio_unitario;
+    private String nombreProducto;
 
     public int getIdDetPedid() {
         return idDetPedid;
@@ -45,5 +46,12 @@ public class PedidoDetalleDTO {
 
     public void setPrecio_unitario(double precio_unitario) {
         this.precio_unitario = precio_unitario;
+    }
+
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
 }

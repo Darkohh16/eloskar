@@ -30,7 +30,8 @@ public class PedidoDetalleDAO {
     }
 
     public List<PedidoDetalleDTO> listarDetallesPorPedido(int pedidoId) {
-        String sql = "SELECT idDetPedid, pedido_id, plato_id, cantidad, precio_unitario FROM pedido_detalle WHERE pedido_id = ?";
+        String sql = "SELECT pd.idDetPedid, pd.pedido_id, pd.plato_id, pd.cantidad, pd.precio_unitario, p.nombre as nombre_producto " +
+                "FROM pedido_detalle pd INNER JOIN productos p ON pd.plato_id = p.idProd WHERE pd.pedido_id = ?";
         List<PedidoDetalleDTO> detalles = new ArrayList<>();
         try (Connection con = PoolConexion.getConnection();
              PreparedStatement pstm = con.prepareStatement(sql)) {
@@ -43,6 +44,7 @@ public class PedidoDetalleDAO {
                     dto.setPlato_id(rs.getInt("plato_id"));
                     dto.setCantidad(rs.getInt("cantidad"));
                     dto.setPrecio_unitario(rs.getDouble("precio_unitario"));
+                    dto.setNombreProducto(rs.getString("nombre_producto"));
                     detalles.add(dto);
                 }
             }

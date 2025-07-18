@@ -77,5 +77,15 @@ public class UsuarioService {
     public boolean cambiarPass(int idUser, String password){
         return usuarioDAO.updatePass(idUser, password) > 0;
     }
+
+    public boolean actualizarPerfil(UsuarioDTO dto) {
+        dto.setIdUser(dto.getIdUser());
+        dto.setNombre(dto.getNombre());
+        dto.setCorreo(dto.getCorreo());
+        dto.setCel(dto.getCel());
+        dto.setDni(dto.getDni());
+        dto.setPassword(dto.getPassword());
+        return usuarioDAO.updatePerfil(dto) > 0;
+    }
 }
 

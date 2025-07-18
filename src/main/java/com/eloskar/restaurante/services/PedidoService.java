@@ -34,4 +34,8 @@ public class PedidoService {
     public PedidoDTO buscarPedidoPorId(int idPedid) {
         return pedidoDAO.buscarPedidoPorId(idPedid);
     }
+
+    public List<PedidoDetalleDTO> listarDetallesPorPedido(int pedidoId) {
+        return pedidoDetalleDAO.listarDetallesPorPedido(pedidoId);
+    }
 } 

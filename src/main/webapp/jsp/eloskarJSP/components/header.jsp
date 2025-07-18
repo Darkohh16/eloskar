@@ -24,15 +24,15 @@
         }
       }
     %>
-    <a href="#">Inicio</a>
     <a href="SrvBuscarProducto">Carta</a>
     <a href="SrvListarReservas">Reservas</a>
-    <a href="#">Contacto</a>
+    <a href="jsp/eloskarJSP/sobreNosotros.jsp">Sobre Nosotros</a>
+    <a href="jsp/eloskarJSP/contacto.jsp">Contacto</a>
     <a href="SrvCarrito" class="cart">Carrito</a>
     <% if (session.getAttribute("idUser") == null) { %>
         <a href="jsp/eloskarJSP/login/login.jsp" class="account">Mi Cuenta</a>
     <% } else { %>
-        <a href="jsp/eloskarJSP/miCuenta.jsp" class="account">Mi Cuenta</a>
+        <a href="SrvMiCuenta" class="account">Mi Cuenta</a>
     <% } %>
 
     <%-- Para pruebas --%>
