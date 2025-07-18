@@ -8,63 +8,91 @@ body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background: #f7f7f7;
     color: #222;
+    margin-top: 0 !important;
 }
 
 /* Header */
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
-    background: #009fe3;
-    color: #fff;
+    background: linear-gradient(90deg, #009fe3 0%, #00c6fb 100%);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.10);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 40px;
+    padding: 14px 40px;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    transition: background 0.4s;
+    top: 0;
+    left: 0;
 }
-.logo {
+.logo-area {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
-.logo img {
-    width: 50px;
-    height: 50px;
+.logo-img {
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    object-fit: cover;
-    background: #fff;
+    border: 2.5px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    transition: transform 0.2s;
 }
-.logo span {
-    font-size: 1.5rem;
+.logo-img:hover { transform: scale(1.08) rotate(-3deg);}
+.logo-text {
+    font-size: 1.6rem;
     font-weight: bold;
+    color: #fff;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 .nav {
     display: flex;
-    gap: 28px;
+    align-items: center;
+    gap: 22px;
 }
 .nav a {
     color: #fff;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.05rem;
+    padding: 7px 14px;
+    border-radius: 18px;
+    transition: background 0.2s, color 0.2s;
     position: relative;
-    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 .nav a:hover {
+    background: rgba(255,255,255,0.13);
     color: #ffe600;
 }
-.cart-badge {
-    background: #e53935;
-    color: #fff;
-    border-radius: 50%;
-    padding: 2px 7px;
-    font-size: 0.8rem;
-    margin-left: 3px;
+.icon {
+    font-size: 1.1em;
     vertical-align: middle;
 }
+.usuario-header {
+    color: #fff;
+    font-size: 1.02rem;
+    font-weight: 500;
+    margin-left: 10px;
+    background: rgba(0,0,0,0.10);
+    border-radius: 14px;
+    padding: 5px 14px 5px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+.logout-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    align-self: center;
+    vertical-align: middle;
+}
+/* Botón cerrar sesión ya está estilizado abajo */
 
 /* Título principal */
 .main-title {
@@ -212,5 +240,57 @@ body {
     }
     .main-title {
         font-size: 1.3rem;
+    }
+}
+
+.btn-cerrar-sesion {
+    background: linear-gradient(90deg, #ff5252 0%, #e53935 100%);
+    color: #fff;
+    border: none;
+    border-radius: 18px;
+    padding: 5px 16px 5px 10px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+    box-shadow: 0 2px 8px rgba(229,57,53,0.13), 0 1px 2px rgba(0,0,0,0.06);
+    transition: background 0.22s, color 0.18s, transform 0.13s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.2px;
+    outline: none;
+    border-bottom: 2px solid #b71c1c;
+    position: relative;
+    overflow: hidden;
+    height: 32px;
+    min-width: 0;
+}
+.btn-cerrar-sesion:hover, .btn-cerrar-sesion:focus {
+    background: linear-gradient(90deg, #e53935 0%, #b71c1c 100%);
+    color: #ffe600;
+    transform: translateY(-1px) scale(1.025);
+    box-shadow: 0 4px 12px rgba(229,57,53,0.18), 0 1.5px 4px rgba(0,0,0,0.08);
+}
+.btn-cerrar-sesion .icon-logout {
+    display: inline-block;
+    font-size: 1em;
+    margin-right: 1px;
+    vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 10px;
+    }
+    .nav {
+        gap: 12px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+    }
+    .logo-area {
+        margin-bottom: 8px;
     }
 }

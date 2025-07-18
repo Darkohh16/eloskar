@@ -6,6 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List, java.util.Map" %>
+<%@ page import="com.eloskar.restaurante.DTO.ReservaDTO" %>
+<%
+  Integer idUser = (Integer) session.getAttribute("idUser");
+  String nombreUsuario = (String) session.getAttribute("nombre");
+%>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -17,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body data-context-path="${pageContext.request.contextPath}">
+<body data-context-path="${pageContext.request.contextPath}" data-user-id="<%= idUser != null ? idUser : "" %>">
 <div class="container">
   <div id="menu-lateral"></div>
   <main class="main-content">
@@ -54,46 +60,50 @@
         </tr>
         </thead>
         <tbody>
+        <% 
+          List<ReservaDTO> reservas = (List<ReservaDTO>) request.getAttribute("reservas");
+          Map<Integer, String> nombresUsuarios = (Map<Integer, String>) request.getAttribute("nombresUsuarios");
+          if (reservas != null && !reservas.isEmpty()) {
+            for (ReservaDTO r : reservas) {
+        %>
         <tr>
-          <td>101</td>
-          <td>Juan Pérez</td>
-          <td>2024-06-10</td>
-          <td>19:00</td>
-          <td>4</td>
-          <td><span class="estado pendiente">Pendiente</span></td>
+          <td><%= r.getIdReser() %></td>
+          <td><%= nombresUsuarios.get(r.getUsuario_id()) %></td>
+          <td><%= r.getFecha() %></td>
+          <td><%= r.getHora() != null && r.getHora().length() >= 5 ? r.getHora().substring(0,5) : r.getHora() %></td>
+          <td><%= r.getCantidad_personas() %></td>
+          <td><span class="estado <%= r.getEstado() %>"><%= r.getEstado().substring(0,1).toUpperCase() + r.getEstado().substring(1) %></span></td>
           <td>
-            <button class="btn-accion confirmar">Confirmar</button>
-            <button class="btn-accion cancelar">Cancelar</button>
-            <button class="btn-accion ver">Ver</button>
+            <% if ("pendiente".equals(r.getEstado())) { %>
+              <form method="post" action="SrvActualizarEstadoReserva" style="display:inline;">
+                <input type="hidden" name="id" value="<%= r.getIdReser() %>" />
+                <input type="hidden" name="estado" value="confirmada" />
+                <button type="submit" class="btn-accion confirmar">Confirmar</button>
+              </form>
+              <form method="post" action="SrvActualizarEstadoReserva" style="display:inline;">
+                <input type="hidden" name="id" value="<%= r.getIdReser() %>" />
+                <input type="hidden" name="estado" value="cancelada" />
+                <button type="submit" class="btn-accion cancelar">Cancelar</button>
+              </form>
+            <% } else if ("confirmada".equals(r.getEstado())) { %>
+              <form method="post" action="SrvActualizarEstadoReserva" style="display:inline;">
+                <input type="hidden" name="id" value="<%= r.getIdReser() %>" />
+                <input type="hidden" name="estado" value="cancelada" />
+                <button type="submit" class="btn-accion cancelar">Cancelar</button>
+              </form>
+            <% } %>
           </td>
         </tr>
-        <tr>
-          <td>102</td>
-          <td>María López</td>
-          <td>2024-06-10</td>
-          <td>20:30</td>
-          <td>2</td>
-          <td><span class="estado confirmada">Confirmada</span></td>
-          <td>
-            <button class="btn-accion ver">Ver</button>
-          </td>
-        </tr>
-        <tr>
-          <td>103</td>
-          <td>Carlos Ruiz</td>
-          <td>2024-06-11</td>
-          <td>18:00</td>
-          <td>6</td>
-          <td><span class="estado cancelada">Cancelada</span></td>
-          <td>
-            <button class="btn-accion ver">Ver</button>
-          </td>
-        </tr>
+        <%   }
+          } else { %>
+        <tr><td colspan="7" style="text-align:center;">No hay reservas registradas.</td></tr>
+        <% } %>
         </tbody>
       </table>
     </section>
   </main>
 </div>
 <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+<script src="${pageContext.request.contextPath}/js/scriptReserva.js"></script>
 </body>
 </html>

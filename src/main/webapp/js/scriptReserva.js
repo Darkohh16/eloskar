@@ -25,4 +25,18 @@ document.addEventListener('DOMContentLoaded', function() {
       // Aquí podrías mostrar un loader o mensaje de "procesando"
     });
   }
+
+  // Confirmaciones para botones de reservas en el dashboard
+  document.addEventListener('submit', function(e) {
+    if (e.target.matches('form') && e.target.querySelector('.btn-accion.confirmar')) {
+      if (!confirm('¿Deseas confirmar esta reserva?')) {
+        e.preventDefault();
+      }
+    }
+    if (e.target.matches('form') && e.target.querySelector('.btn-accion.cancelar')) {
+      if (!confirm('¿Deseas cancelar esta reserva?')) {
+        e.preventDefault();
+      }
+    }
+  });
 });
