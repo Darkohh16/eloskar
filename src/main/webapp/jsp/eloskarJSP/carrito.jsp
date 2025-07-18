@@ -22,16 +22,13 @@
 </head>
 <body data-context-path="${pageContext.request.contextPath}" data-user-id="<%= session.getAttribute("idUser") != null ? session.getAttribute("idUser") : "" %>">
 
-<!-- Include Header -->
 <jsp:include page="components/header.jsp" />
 
-<!-- Contenido principal -->
 <main class="carrito-main">
   <div class="carrito-container">
     <h1 class="carrito-title">Mi Carrito</h1>
     
     <div class="carrito-content">
-      <!-- Lista de productos -->
       <div class="productos-lista">
         <h2>Productos (<%= detalles != null ? detalles.size() : 0 %>)</h2>
         <% 
@@ -80,7 +77,6 @@
         <p>No hay productos en el carrito.</p>
         <% } %>
       </div>
-      <!-- Sección de datos para el pedido (integrada desde pedidos.jsp) -->
       <section class="datos-pedido-section">
         <h2 class="titulo-seccion">Datos para el pedido</h2>
         <form id="formPedido" method="post" action="SrvConfirmarPedido">
@@ -112,8 +108,7 @@
           </div>
         </form>
       </section>
-      
-      <!-- Resumen del pedido -->
+
       <div class="resumen-pedido">
         <a href="SrvBuscarProducto" class="btn-seguir-comprando">Seguir Comprando</a>
       </div>
@@ -121,7 +116,6 @@
   </div>
 </main>
 
-<!-- Include Footer -->
 <jsp:include page="components/footer.jsp" />
 <script src="js/scriptCarrito.js"></script>
 </body>

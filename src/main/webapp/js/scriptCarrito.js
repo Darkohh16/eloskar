@@ -1,4 +1,3 @@
-// Script para la sección de confirmación de pedido (migrado de scriptPedidos.js)
 document.addEventListener('DOMContentLoaded', function() {
   // Lógica para tipo de entrega
   const radioDelivery = document.getElementById('entrega_delivery');
@@ -22,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   if (radioDelivery && radioPickup && direccionInput) {
-    // Usar click y setTimeout para asegurar actualización del estado
     radioDelivery.addEventListener('click', function() { setTimeout(actualizarDireccion, 0); });
     radioPickup.addEventListener('click', function() { setTimeout(actualizarDireccion, 0); });
     radioDelivery.addEventListener('change', actualizarDireccion);

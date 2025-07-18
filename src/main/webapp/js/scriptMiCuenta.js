@@ -1,5 +1,3 @@
-// Validación simple del formulario de perfil
-
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.getElementById('formPerfil');
   if (form) {

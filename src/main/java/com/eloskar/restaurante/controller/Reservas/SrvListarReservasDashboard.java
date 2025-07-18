@@ -44,7 +44,7 @@ public class SrvListarReservasDashboard extends HttpServlet {
         } else {
             reservas = reservaService.listarTodasReservas();
         }
-        // Mapa para mostrar el nombre del cliente en la tabla
+
         Map<Integer, String> nombresUsuarios = new HashMap<>();
         for (ReservaDTO r : reservas) {
             int idUser = r.getUsuario_id();

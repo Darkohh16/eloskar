@@ -1,5 +1,3 @@
-// Script para la vista de pedidos en el dashboard
-
 document.addEventListener('DOMContentLoaded', function() {
   // Confirmaciones para botones de pedidos en el dashboard
   document.addEventListener('submit', function(e) {

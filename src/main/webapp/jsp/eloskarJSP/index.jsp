@@ -23,10 +23,8 @@
 </head>
 <body data-context-path="${pageContext.request.contextPath}">
 
-<!-- Include Header -->
 <jsp:include page="/jsp/eloskarJSP/components/header.jsp" />
 
-<!-- Título principal -->
 <main>
   <h1 class="main-title">Nuestra Carta</h1>
 
@@ -49,7 +47,7 @@
           <span class="price">S/. <%= p.getPrecio() %></span>
 
           <% if (!p.isDisponible()) { %>
-          <p class="no-disponible-msg">Este producto está agotado para envío, pero puede realizar una reservación.</p>
+          <p class="no-disponible-msg">Este producto está agotado para envío.</p>
           <% } %>
 
           <% if (p.isDisponible()) { %>
@@ -73,7 +71,6 @@
   %>
 </main>
 
-<!-- Include Footer -->
 <jsp:include page="/jsp/eloskarJSP/components/footer.jsp" />
 
 <script src="script.js"></script>

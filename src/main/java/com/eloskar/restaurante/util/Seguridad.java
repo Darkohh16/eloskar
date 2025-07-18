@@ -11,7 +11,6 @@ public class Seguridad {
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute("idUser") == null) {
-            // No hay sesión → redirigir al login
             response.sendRedirect(request.getContextPath() + "/jsp/eloskarJSP/login/login.jsp");
             return false;
         }
@@ -19,13 +18,12 @@ public class Seguridad {
         String rol = (String) session.getAttribute("rol");
 
         if (!"admin".equalsIgnoreCase(rol)) {
-            // Tiene sesión, pero no es admin → acceso denegado
             response.setContentType("text/html");
             response.getWriter().write("<script>alert('No tienes permiso para eso'); " +
                     "window.location='SrvBuscarProducto';</script>");
             return false;
         }
 
-        return true; // Tiene sesión y es admin
+        return true;
     }
 }

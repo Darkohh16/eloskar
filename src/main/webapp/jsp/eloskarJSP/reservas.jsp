@@ -15,7 +15,6 @@
 </head>
 <body data-context-path="${pageContext.request.contextPath}" data-user-id="<%= idUser != null ? idUser : "" %>">
 
-<!-- Include Header -->
 <jsp:include page="components/header.jsp" />
 
 <main class="reservas-main">
@@ -75,7 +74,6 @@
   </section>
 </main>
 
-<!-- Include Footer -->
 <jsp:include page="components/footer.jsp" />
 
 <script src="js/scriptReserva.js"></script>

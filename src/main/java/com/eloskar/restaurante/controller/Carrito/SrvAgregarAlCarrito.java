@@ -49,7 +49,6 @@ public class SrvAgregarAlCarrito extends HttpServlet {
         boolean encontrado = false;
         for (CarritoDetalleDTO det : carrito.getDetalles()) {
             if (det.getProducto_id() == idProducto) {
-                // Sumar cantidad
                 DetalleCarritoService detalleService = new DetalleCarritoService();
                 detalleService.actualizarDetalle(det.getIdDetalle(), det.getCantidad() + 1);
                 encontrado = true;

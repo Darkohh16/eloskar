@@ -65,7 +65,7 @@ public class SrvConfirmarPedido extends HttpServlet {
             total += pd.getPrecio_unitario() * pd.getCantidad();
             detallesPedido.add(pd);
         }
-        // Sumar envío fijo si corresponde (puedes ajustar la lógica)
+        // Sumar envío fijo si corresponde
         if ("delivery".equals(tipoEntrega)) {
             total += 5.0;
         }

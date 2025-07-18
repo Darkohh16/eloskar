@@ -23,7 +23,6 @@
         <div class="card">
             <h1 class="titulo">REGISTRARSE</h1>
 
-            <!-- ✅ Logo justo después del título -->
             <div style="text-align: center; margin-bottom: 25px">
                 <img src="img/logo.png" alt="Logo El Oskar" class="logo" />
             </div>

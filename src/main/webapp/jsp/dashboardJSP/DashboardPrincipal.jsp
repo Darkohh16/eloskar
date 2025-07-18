@@ -58,24 +58,6 @@
         <p class="card-number">S/ <%= request.getAttribute("ingresosHoy") != null ? String.format("%.2f", request.getAttribute("ingresosHoy")) : "0.00" %></p>
       </div>
     </section>
-    <section class="charts-section">
-      <div class="chart-card">
-        <h4>Reservas por Estado</h4>
-        <div class="chart-placeholder">[Gráfica de pastel]</div>
-      </div>
-      <div class="chart-card">
-        <h4>Pedidos por Estado</h4>
-        <div class="chart-placeholder">[Gráfica de barras]</div>
-      </div>
-      <div class="chart-card">
-        <h4>Ingresos por Mes</h4>
-        <div class="chart-placeholder">[Gráfica de líneas]</div>
-      </div>
-      <div class="chart-card">
-        <h4>Productos más vendidos</h4>
-        <div class="chart-placeholder">[Gráfica de barras]</div>
-      </div>
-    </section>
     <section class="notifications-section">
       <h4>Notificaciones</h4>
       <ul class="notifications-list">

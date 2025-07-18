@@ -11,7 +11,6 @@
     }
   }
 %>
-<!-- Header -->
 <header class="header">
   <div class="logo-area">
     <img src="img/logo.png" alt="El Oskar" class="logo-img" />

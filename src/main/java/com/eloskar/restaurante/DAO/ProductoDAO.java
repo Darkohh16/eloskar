@@ -2,7 +2,6 @@ package com.eloskar.restaurante.DAO;
 
 import com.eloskar.restaurante.DTO.CategoriaDTO;
 import com.eloskar.restaurante.DTO.ProductoDTO;
-import com.eloskar.restaurante.util.Conexion;
 import com.eloskar.restaurante.util.PoolConexion;
 
 import java.sql.Connection;

@@ -30,7 +30,7 @@ public class SrvActualizarDispProducto extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (!Seguridad.verificarAccesoAdmin(request, response)) {
-            return; // Se redirigió por falta de sesión o acceso
+            return;
         }
 
         int id = Integer.parseInt(request.getParameter("id"));

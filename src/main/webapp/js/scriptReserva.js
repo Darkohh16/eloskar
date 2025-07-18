@@ -1,5 +1,3 @@
-// Script para la vista de reservas
-
 document.addEventListener('DOMContentLoaded', function() {
   // Validación de login (debe estar en el body como data-user-id)
   const userId = document.body.getAttribute('data-user-id');
@@ -22,11 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Por favor, completa todos los campos correctamente.');
         return false;
       }
-      // Aquí podrías mostrar un loader o mensaje de "procesando"
     });
   }
 
-  // Confirmaciones para botones de reservas en el dashboard
   document.addEventListener('submit', function(e) {
     if (e.target.matches('form') && e.target.querySelector('.btn-accion.confirmar')) {
       if (!confirm('¿Deseas confirmar esta reserva?')) {

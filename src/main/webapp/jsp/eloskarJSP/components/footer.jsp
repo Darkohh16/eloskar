@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<!-- Footer -->
 <footer class="footer">
   <div class="footer-section">
     <h4>Horario</h4>

@@ -105,7 +105,6 @@
 
 <jsp:include page="components/footer.jsp" />
 
-<!-- Modal de detalles de pedido (estático de ejemplo) -->
 <div class="modal-detalles" id="modalDetalles">
   <div class="modal-detalles-content">
     <button class="btn-cerrar-modal" id="cerrarModalDetalles" title="Cerrar">&times;</button>

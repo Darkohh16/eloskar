@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class PoolConexion {
-    //Una sola pool
     private static final HikariDataSource dataSource;
 
     static {

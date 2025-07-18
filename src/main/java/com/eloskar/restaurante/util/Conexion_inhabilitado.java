@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Conexion {
+public class Conexion_inhabilitado {
 
     private static final Dotenv dotenv = Dotenv.configure()
             .ignoreIfMissing()    // No lanza error si no hay .env

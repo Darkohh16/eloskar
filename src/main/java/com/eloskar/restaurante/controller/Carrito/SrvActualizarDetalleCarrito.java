@@ -30,9 +30,6 @@ public class SrvActualizarDetalleCarrito extends HttpServlet {
         int idDetalle = Integer.parseInt(request.getParameter("idDetalle"));
         DetalleCarritoService service = new DetalleCarritoService();
         if ("sumar".equals(accion)) {
-            // Obtener cantidad actual y sumar 1
-            // Aquí deberías obtener la cantidad actual, pero para simplificar, puedes pasar la cantidad +1 desde el frontend o hacer una consulta extra
-            // Suponiendo que tienes la cantidad actual en un campo oculto (mejorar esto si es necesario)
             int cantidadActual = Integer.parseInt(request.getParameter("cantidad"));
             service.actualizarDetalle(idDetalle, cantidadActual + 1);
         } else if ("restar".equals(accion)) {
