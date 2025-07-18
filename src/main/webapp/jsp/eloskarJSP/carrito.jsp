@@ -79,50 +79,40 @@
         <p>No hay productos en el carrito.</p>
         <% } %>
       </div>
+      <!-- Sección de datos para el pedido (integrada desde pedidos.jsp) -->
+      <section class="datos-pedido-section">
+        <h2 class="titulo-seccion">Datos para el pedido</h2>
+        <form id="formPedido" method="post" action="SrvConfirmarPedido">
+          <div class="form-pedido-flex">
+            <div class="form-pedido-entrega">
+              <input type="radio" id="entrega_delivery" name="tipo_entrega" value="delivery" checked>
+              <label for="entrega_delivery" class="label-radio-margin">Delivery a domicilio</label>
+              <input type="radio" id="entrega_pickup" name="tipo_entrega" value="pickup">
+              <label for="entrega_pickup">Recoger en local</label>
+            </div>
+            <div class="form-pedido-campo">
+              <label for="direccion">Dirección de entrega:</label>
+              <input type="text" id="direccion" name="direccion" placeholder="Ej: Av. Principal 123" required>
+            </div>
+            <div class="form-pedido-campo">
+              <label for="metodo_pago">Método de pago:</label>
+              <select id="metodo_pago" name="metodo_pago" required>
+                <option value="">Selecciona...</option>
+                <option value="1">Efectivo</option>
+                <option value="2">Tarjeta</option>
+                <option value="3">Yape</option>
+              </select>
+            </div>
+            <div class="form-pedido-boton">
+              <button type="submit" class="btn-finalizar no-margin">Confirmar Pedido</button>
+            </div>
+          </div>
+        </form>
+      </section>
       
       <!-- Resumen del pedido -->
       <div class="resumen-pedido">
-        <h2>Resumen del Pedido</h2>
-        
-        <div class="resumen-item">
-          <span>Subtotal:</span>
-          <span>S/. <%= subtotal %></span>
-        </div>
-        
-        <div class="resumen-item">
-          <span>Envío:</span>
-          <span>S/. 5.00</span>
-        </div>
-        
-        <div class="resumen-item total">
-          <span>Total:</span>
-          <span>S/. <%= subtotal + 5 %></span>
-        </div>
-        
-        <div class="opciones-entrega">
-          <h3>Opciones de Entrega</h3>
-          <div class="opcion-entrega">
-            <input type="radio" id="delivery" name="entrega" value="delivery" checked>
-            <label for="delivery">Delivery a domicilio</label>
-          </div>
-          <div class="opcion-entrega">
-            <input type="radio" id="pickup" name="entrega" value="pickup">
-            <label for="pickup">Recoger en local</label>
-          </div>
-        </div>
-        
-        <div class="horario-entrega">
-          <h3>Horario de Entrega</h3>
-          Aqui ira el tiempo estimado de entrega
-        </div>
-        
-        <button class="btn-finalizar" >
-          Finalizar Pedido
-        </button>
-        
-        <a href="SrvBuscarProducto" class="btn-seguir-comprando">
-          Seguir Comprando
-        </a>
+        <a href="SrvBuscarProducto" class="btn-seguir-comprando">Seguir Comprando</a>
       </div>
     </div>
   </div>
@@ -130,6 +120,6 @@
 
 <!-- Include Footer -->
 <jsp:include page="components/footer.jsp" />
-
+<script src="js/scriptCarrito.js"></script>
 </body>
 </html> 

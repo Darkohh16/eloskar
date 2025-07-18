@@ -28,14 +28,14 @@ public class SrvListarReservas extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Integer idUser = (Integer) request.getSession().getAttribute("idUser");
-        if (idUser == null) {
+        Integer idUser = (Integer) request.getSession().getAttribute("idUser");if (idUser == null) {
             response.setContentType("text/html");
             response.getWriter().write("<script>alert('Debes loguearte para reservar.'); " +
                     "window.location='" + request.getContextPath() +
                     "/jsp/eloskarJSP/login/login.jsp';</script>");
             return;
         }
+
         ReservaService reservaService = new ReservaService();
         List<ReservaDTO> reservas = reservaService.listarReservasPorUsuario(idUser);
         request.setAttribute("reservasUsuario", reservas);

@@ -21,28 +21,28 @@
 <main class="reservas-main">
   <h1 class="main-title">Reservas</h1>
 
-  <section class="form-reserva-section" style="max-width: 600px; margin: 0 auto 40px auto;">
-    <h2 style="color: #009fe3; margin-bottom: 18px;">Realizar una nueva reserva</h2>
+  <section class="form-reserva-section">
+    <h2 class="titulo-seccion-reserva">Realizar una nueva reserva</h2>
     <form id="formReserva" method="post" action="SrvAgregarReserva">
-      <div style="display: flex; gap: 18px; flex-wrap: wrap;">
-        <div style="flex: 1 1 200px;">
+      <div class="form-reserva-flex">
+        <div class="form-reserva-campo-200">
           <label for="fecha">Fecha:</label>
           <input type="date" id="fecha" name="fecha" required min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
         </div>
-        <div style="flex: 1 1 120px;">
+        <div class="form-reserva-campo-120">
           <label for="hora">Hora:</label>
           <input type="time" id="hora" name="hora" required>
         </div>
-        <div style="flex: 1 1 120px;">
+        <div class="form-reserva-campo-120">
           <label for="personas">Personas:</label>
           <input type="number" id="personas" name="personas" min="1" max="20" required>
         </div>
       </div>
-      <button type="submit" class="btn-finalizar" style="margin-top: 18px;">Reservar</button>
+      <button type="submit" class="btn-finalizar mt-18">Reservar</button>
     </form>
   </section>
-  <section class="tabla-reservas-section" style="max-width: 900px; margin: 0 auto;">
-    <h2 style="color: #009fe3; margin-bottom: 18px;">Mis Reservas</h2>
+  <section class="tabla-reservas-section">
+    <h2 class="titulo-tabla-reserva">Mis Reservas</h2>
     <table class="main-table">
       <thead>
       <tr>
@@ -68,7 +68,7 @@
       </tr>
       <%   }
         } else { %>
-      <tr><td colspan="5" style="text-align:center;">No tienes reservas registradas.</td></tr>
+      <tr><td colspan="5" class="tabla-reservas-vacia">No tienes reservas registradas.</td></tr>
       <% } %>
       </tbody>
     </table>
