@@ -79,4 +79,20 @@ public class CarritoDetalleDAO {
         }
         return detalles;
     }
+
+    public double obtenerPrecioProducto(int productoId) {
+        String sql = "SELECT precio FROM productos WHERE idProd = ?";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql)) {
+            pstm.setInt(1, productoId);
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("precio");
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al obtener precio del producto: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
 }

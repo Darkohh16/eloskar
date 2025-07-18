@@ -39,4 +39,8 @@ public class DetalleCarritoService {
 
         return carritoDetalleDAO.deleteDetalle(idDetalle) > 0;
     }
+
+    public double obtenerPrecioProducto(int productoId) {
+        return carritoDetalleDAO.obtenerPrecioProducto(productoId);
+    }
 }
