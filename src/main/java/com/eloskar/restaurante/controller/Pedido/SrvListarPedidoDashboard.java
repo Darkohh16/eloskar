@@ -1,21 +1,16 @@
-package com.eloskar.restaurante.controller.Reservas;
+package com.eloskar.restaurante.controller.Pedido;
 
-import com.eloskar.restaurante.DTO.ReservaDTO;
-import com.eloskar.restaurante.services.ReservaService;
-import com.eloskar.restaurante.services.UsuarioService;
-import com.eloskar.restaurante.DTO.UsuarioDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
-@WebServlet(name = "SrvListarReservasDashboard", value = "/SrvListarReservasDashboard")
-public class SrvListarReservasDashboard extends HttpServlet {
+import java.io.IOException;
+
+@WebServlet(name = "SrvListarPedidoDashboard", value = "/SrvListarPedidoDashboard")
+public class SrvListarPedidoDashboard extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -34,27 +29,26 @@ public class SrvListarReservasDashboard extends HttpServlet {
         String estado = request.getParameter("estado");
         String fecha = request.getParameter("fecha");
 
-        ReservaService reservaService = new ReservaService();
-        UsuarioService usuarioService = new UsuarioService();
-        List<ReservaDTO> reservas;
+        com.eloskar.restaurante.services.PedidoService pedidoService = new com.eloskar.restaurante.services.PedidoService();
+        com.eloskar.restaurante.services.UsuarioService usuarioService = new com.eloskar.restaurante.services.UsuarioService();
+        java.util.List<com.eloskar.restaurante.DTO.PedidoDTO> pedidos;
         if ((cliente != null && !cliente.trim().isEmpty()) ||
             (estado != null && !estado.trim().isEmpty()) ||
             (fecha != null && !fecha.trim().isEmpty())) {
-            reservas = reservaService.buscarReservasPorFiltros(cliente, estado, fecha);
+            pedidos = pedidoService.buscarPedidosPorFiltros(cliente, estado, fecha);
         } else {
-            reservas = reservaService.listarTodasReservas();
+            pedidos = pedidoService.listarTodosPedidos();
         }
-        // Mapa para mostrar el nombre del cliente en la tabla
-        Map<Integer, String> nombresUsuarios = new HashMap<>();
-        for (ReservaDTO r : reservas) {
-            int idUser = r.getUsuario_id();
+        java.util.Map<Integer, String> nombresUsuarios = new java.util.HashMap<>();
+        for (com.eloskar.restaurante.DTO.PedidoDTO p : pedidos) {
+            int idUser = p.getUsuario_id();
             if (!nombresUsuarios.containsKey(idUser)) {
-                UsuarioDTO usuario = usuarioService.obtenerDatosRecuperacion(idUser);
+                com.eloskar.restaurante.DTO.UsuarioDTO usuario = usuarioService.obtenerDatosRecuperacion(idUser);
                 nombresUsuarios.put(idUser, usuario != null ? usuario.getNombre() : "-");
             }
         }
-        request.setAttribute("reservas", reservas);
+        request.setAttribute("pedidos", pedidos);
         request.setAttribute("nombresUsuarios", nombresUsuarios);
-        request.getRequestDispatcher("/jsp/dashboardJSP/Reservas.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/dashboardJSP/Pedidos.jsp").forward(request, response);
     }
 }

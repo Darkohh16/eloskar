@@ -36,4 +36,16 @@ public class ReservaService {
     public boolean eliminarReserva(int idReser) {
         return reservaDAO.eliminarReserva(idReser) > 0;
     }
+
+    public List<ReservaDTO> buscarReservasPorFiltros(String cliente, String estado, String fecha) {
+        return reservaDAO.buscarReservasPorFiltros(cliente, estado, fecha);
+    }
+
+    public int contarReservasHoy() {
+        return reservaDAO.contarReservasHoy();
+    }
+
+    public int contarReservasPendientes() {
+        return reservaDAO.contarReservasPendientes();
+    }
 }

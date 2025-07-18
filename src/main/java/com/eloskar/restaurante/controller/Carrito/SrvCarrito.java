@@ -34,7 +34,10 @@ public class SrvCarrito extends HttpServlet {
         }
         CarritoService carritoService = new CarritoService();
         CarritoDTO carrito = carritoService.cargarCarritos(idUser);
+        com.eloskar.restaurante.services.MetodoPagoService metodoPagoService = new com.eloskar.restaurante.services.MetodoPagoService();
+        java.util.List<com.eloskar.restaurante.DTO.MetodoPagoDTO> metodosPago = metodoPagoService.listarMetodosPago();
         request.setAttribute("carrito", carrito);
+        request.setAttribute("metodosPago", metodosPago);
         request.getRequestDispatcher("/jsp/eloskarJSP/carrito.jsp").forward(request, response);
     }
 }

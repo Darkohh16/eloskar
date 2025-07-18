@@ -66,11 +66,11 @@ public class ProductoDAO {
             pstm.setInt(2, id);
 
             //=======================================
-            int updated = pstm.executeUpdate();
-            if (updated == 0) {
-                throw new RuntimeException("No se actualizó ningún producto. ID no encontrado.");
-            }
-            return updated;
+//            int updated = pstm.executeUpdate();
+//            if (updated == 0) {
+//                throw new RuntimeException("No se actualizó ningún producto. ID no encontrado.");
+//            }
+            return pstm.executeUpdate();
             //=======================================
 
         } catch (SQLException ex) {
@@ -236,5 +236,19 @@ public class ProductoDAO {
             throw new RuntimeException("Error al buscar producto por ID", ex);
         }
         return null;
+    }
+
+    public int contarProductosDeshabilitados() {
+        String sql = "SELECT COUNT(*) FROM productos WHERE disponible = 0";
+        try (Connection con = com.eloskar.restaurante.util.PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar productos deshabilitados: " + ex.getMessage(), ex);
+        }
+        return 0;
     }
 }

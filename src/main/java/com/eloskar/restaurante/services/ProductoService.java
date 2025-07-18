@@ -75,4 +75,8 @@ public class ProductoService {
     public ProductoDTO obtenerProductoPorId(int idProd) {
         return productoDAO.buscarProdPorId(idProd);
     }
+
+    public int contarProductosDeshabilitados() {
+        return productoDAO.contarProductosDeshabilitados();
+    }
 }

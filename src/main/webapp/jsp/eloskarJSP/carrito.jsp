@@ -8,6 +8,7 @@
   CarritoDTO carrito = (CarritoDTO) request.getAttribute("carrito");
   List<CarritoDetalleDTO> detalles = carrito != null ? carrito.getDetalles() : null;
   ProductoService productoService = new ProductoService();
+  List<com.eloskar.restaurante.DTO.MetodoPagoDTO> metodosPago = (List<com.eloskar.restaurante.DTO.MetodoPagoDTO>) request.getAttribute("metodosPago");
 %>
 <html lang="es">
 <head>
@@ -98,9 +99,11 @@
               <label for="metodo_pago">Método de pago:</label>
               <select id="metodo_pago" name="metodo_pago" required>
                 <option value="">Selecciona...</option>
-                <option value="1">Efectivo</option>
-                <option value="2">Tarjeta</option>
-                <option value="3">Yape</option>
+                <% if (metodosPago != null) {
+                     for (com.eloskar.restaurante.DTO.MetodoPagoDTO mp : metodosPago) { %>
+                       <option value="<%= mp.getIdPago() %>"><%= mp.getNombre() %></option>
+                <%   }
+                   } %>
               </select>
             </div>
             <div class="form-pedido-boton">

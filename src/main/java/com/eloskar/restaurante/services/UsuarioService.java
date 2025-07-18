@@ -87,5 +87,9 @@ public class UsuarioService {
         dto.setPassword(dto.getPassword());
         return usuarioDAO.updatePerfil(dto) > 0;
     }
+
+    public int contarUsuarios() {
+        return usuarioDAO.contarUsuarios();
+    }
 }
 

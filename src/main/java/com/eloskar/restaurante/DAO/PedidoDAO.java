@@ -130,4 +130,88 @@ public class PedidoDAO {
             throw new RuntimeException("Error al eliminar pedido: " + ex.getMessage(), ex);
         }
     }
+
+    public List<PedidoDTO> buscarPedidosPorFiltros(String cliente, String estado, String fecha) {
+        StringBuilder sql = new StringBuilder("SELECT p.idPedid, p.usuario_id, p.fecha, p.total, p.estado, p.metodo_pago_id, p.tipo_entrega, p.direccion FROM pedidos p INNER JOIN usuarios u ON p.usuario_id = u.idUser WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+        if (cliente != null && !cliente.trim().isEmpty()) {
+            sql.append(" AND u.nombre LIKE ?");
+            params.add("%" + cliente.trim() + "%");
+        }
+        if (estado != null && !estado.trim().isEmpty()) {
+            sql.append(" AND p.estado = ?");
+            params.add(estado.trim());
+        }
+        if (fecha != null && !fecha.trim().isEmpty()) {
+            sql.append(" AND CONVERT(date, p.fecha) = ?");
+            params.add(fecha.trim());
+        }
+        sql.append(" ORDER BY p.fecha DESC");
+        List<PedidoDTO> pedidos = new ArrayList<>();
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                pstm.setObject(i + 1, params.get(i));
+            }
+            try (ResultSet rs = pstm.executeQuery()) {
+                while (rs.next()) {
+                    PedidoDTO dto = new PedidoDTO();
+                    dto.setIdPedid(rs.getInt("idPedid"));
+                    dto.setUsuario_id(rs.getInt("usuario_id"));
+                    dto.setFecha(rs.getString("fecha"));
+                    dto.setTotal(rs.getDouble("total"));
+                    dto.setEstado(rs.getString("estado"));
+                    dto.setMetodo_pago_id(rs.getInt("metodo_pago_id"));
+                    dto.setTipo_entrega(rs.getString("tipo_entrega"));
+                    dto.setDireccion(rs.getString("direccion"));
+                    pedidos.add(dto);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al buscar pedidos por filtros: " + ex.getMessage(), ex);
+        }
+        return pedidos;
+    }
+
+    public int contarPedidosHoy() {
+        String sql = "SELECT COUNT(*) FROM pedidos WHERE CONVERT(date, fecha) = CONVERT(date, GETDATE())";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar pedidos de hoy: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
+
+    public double sumarIngresosHoy() {
+        String sql = "SELECT SUM(total) FROM pedidos WHERE estado = 'entregado' AND CONVERT(date, fecha) = CONVERT(date, GETDATE())";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al sumar ingresos de hoy: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
+
+    public int contarPedidosPendientes() {
+        String sql = "SELECT COUNT(*) FROM pedidos WHERE estado = 'pendiente'";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar pedidos pendientes: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
 }

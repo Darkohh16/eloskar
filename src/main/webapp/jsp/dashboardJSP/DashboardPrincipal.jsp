@@ -8,19 +8,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   int idUser;
-  String rol = "";
-  if (session != null && session.getAttribute("idUser") != null) {
-    idUser = (Integer) session.getAttribute("idUser");
-    rol = (String) session.getAttribute("rol");
-  }
-
-  if (!"admin".equals(rol)) {
+  String rol = (String) session.getAttribute("rol");
+  if (rol == null || !(rol.equals("admin") || rol.equals("encargado"))) {
 %>
   <script>
-    alert("Acceso denegado. Solo el administrador puede ingresar aquí.");
+    alert("Privilegios inválidos");
     history.back();
   </script>
 <%
+    return;
   }
 %>
 <html lang="es">
@@ -41,25 +37,25 @@
     <header class="header">
       <h1>Dashboard Principal</h1>
       <div class="user-info">
-        <span>Admin</span>
+        <span><%= rol.toUpperCase() %></span>
       </div>
     </header>
     <section class="summary-cards">
       <div class="card">
         <h3>Usuarios</h3>
-        <p class="card-number">120</p>
+        <p class="card-number"><%= request.getAttribute("totalUsuarios") != null ? request.getAttribute("totalUsuarios") : 0 %></p>
       </div>
       <div class="card">
         <h3>Reservas Hoy</h3>
-        <p class="card-number">15</p>
+        <p class="card-number"><%= request.getAttribute("reservasHoy") != null ? request.getAttribute("reservasHoy") : 0 %></p>
       </div>
       <div class="card">
         <h3>Pedidos Hoy</h3>
-        <p class="card-number">32</p>
+        <p class="card-number"><%= request.getAttribute("pedidosHoy") != null ? request.getAttribute("pedidosHoy") : 0 %></p>
       </div>
       <div class="card">
         <h3>Ingresos Hoy</h3>
-        <p class="card-number">S/ 1,250.00</p>
+        <p class="card-number">S/ <%= request.getAttribute("ingresosHoy") != null ? String.format("%.2f", request.getAttribute("ingresosHoy")) : "0.00" %></p>
       </div>
     </section>
     <section class="charts-section">
@@ -83,10 +79,22 @@
     <section class="notifications-section">
       <h4>Notificaciones</h4>
       <ul class="notifications-list">
-        <li>3 reservas pendientes de confirmación</li>
-        <li>2 productos sin stock</li>
-        <li>5 pedidos pendientes de entrega</li>
-      </ul>
+        <% int reservasPendientes = request.getAttribute("reservasPendientes") != null ? (int) request.getAttribute("reservasPendientes") : 0;
+       int pedidosPendientes = request.getAttribute("pedidosPendientes") != null ? (int) request.getAttribute("pedidosPendientes") : 0;
+       int productosDeshabilitados = request.getAttribute("productosDeshabilitados") != null ? (int) request.getAttribute("productosDeshabilitados") : 0;
+       if (reservasPendientes > 0) { %>
+         <li>Reservas pendientes de confirmación: <%= reservasPendientes %></li>
+    <% } %>
+    <% if (pedidosPendientes > 0) { %>
+         <li>Pedidos pendientes de entrega: <%= pedidosPendientes %></li>
+    <% } %>
+    <% if (productosDeshabilitados > 0) { %>
+         <li>Productos Deshabilitados: <%= productosDeshabilitados %></li>
+    <% } %>
+    <% if (reservasPendientes == 0 && pedidosPendientes == 0 && productosDeshabilitados == 0) { %>
+         <li>No hay notificaciones pendientes.</li>
+    <% } %>
+  </ul>
     </section>
   </main>
 </div>

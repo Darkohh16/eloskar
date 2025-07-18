@@ -8,6 +8,16 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+  String rol = (String) session.getAttribute("rol");
+  if (rol == null || !rol.equals("admin")) {
+%>
+  <script>
+    alert("Privilegios inválidos");
+    history.back();
+  </script>
+<%
+    return;
+  }
   List<UsuarioDTO> usuarios = (List<UsuarioDTO>) request.getAttribute("usuario");
 %>
 <html lang="es">

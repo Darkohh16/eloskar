@@ -9,6 +9,16 @@
 <%@ page import="java.util.List, java.util.Map" %>
 <%@ page import="com.eloskar.restaurante.DTO.ReservaDTO" %>
 <%
+  String rol = (String) session.getAttribute("rol");
+  if (rol == null || !(rol.equals("admin") || rol.equals("encargado"))) {
+%>
+  <script>
+    alert("Privilegios inválidos");
+    history.back();
+  </script>
+<%
+    return;
+  }
   Integer idUser = (Integer) session.getAttribute("idUser");
   String nombreUsuario = (String) session.getAttribute("nombre");
 %>
@@ -34,15 +44,15 @@
       </div>
     </header>
     <section class="filters-section">
-      <form class="filters-form">
-        <input type="text" placeholder="Buscar por cliente, fecha o estado..." class="input-search">
-        <select>
-          <option value="">Estado</option>
-          <option value="pendiente">Pendiente</option>
-          <option value="confirmada">Confirmada</option>
-          <option value="cancelada">Cancelada</option>
+      <form class="filters-form" method="get" action="SrvListarReservasDashboard">
+        <input type="text" name="cliente" value="<%= request.getParameter("cliente") != null ? request.getParameter("cliente") : "" %>" placeholder="Buscar por cliente..." class="input-search">
+        <select name="estado">
+          <option value="">Todos</option>
+          <option value="pendiente" <%= "pendiente".equals(request.getParameter("estado")) ? "selected" : "" %>>Pendiente</option>
+          <option value="confirmada" <%= "confirmada".equals(request.getParameter("estado")) ? "selected" : "" %>>Confirmada</option>
+          <option value="cancelada" <%= "cancelada".equals(request.getParameter("estado")) ? "selected" : "" %>>Cancelada</option>
         </select>
-        <input type="date" placeholder="Fecha" class="input-date">
+        <input type="date" name="fecha" value="<%= request.getParameter("fecha") != null ? request.getParameter("fecha") : "" %>" class="input-date">
         <button type="submit" class="btn-filtrar">Filtrar</button>
       </form>
     </section>

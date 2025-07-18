@@ -240,4 +240,18 @@ public class UsuarioDAO {
             throw new RuntimeException("Error al actualizar perfil: " + ex.getMessage(), ex);
         }
     }
+
+    public int contarUsuarios() {
+        String sql = "SELECT COUNT(*) FROM usuarios";
+        try (java.sql.Connection con = com.eloskar.restaurante.util.PoolConexion.getConnection();
+             java.sql.PreparedStatement pstm = con.prepareStatement(sql);
+             java.sql.ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (java.sql.SQLException ex) {
+            throw new RuntimeException("Error al contar usuarios: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
 }

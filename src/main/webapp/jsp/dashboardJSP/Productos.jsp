@@ -9,6 +9,18 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+  String rol = (String) session.getAttribute("rol");
+  if (rol == null || !(rol.equals("admin") || rol.equals("encargado"))) {
+%>
+  <script>
+    alert("Privilegios inválidos");
+    history.back();
+  </script>
+<%
+    return;
+  }
+%>
+<%
     List<ProductoDTO> productos = (List<ProductoDTO>) request.getAttribute("producto");
     String d, a;
     List<CategoriaDTO> categorias = (List<CategoriaDTO>) request.getAttribute("categoria");

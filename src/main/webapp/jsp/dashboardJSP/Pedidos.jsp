@@ -6,6 +6,20 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List, java.util.Map" %>
+<%@ page import="com.eloskar.restaurante.DTO.PedidoDTO" %>
+<%
+  String rol = (String) session.getAttribute("rol");
+  if (rol == null || !(rol.equals("admin") || rol.equals("encargado"))) {
+%>
+  <script>
+    alert("Privilegios inválidos");
+    history.back();
+  </script>
+<%
+    return;
+  }
+%>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -28,15 +42,15 @@
             </div>
         </header>
         <section class="filters-section">
-            <form class="filters-form">
-                <input type="text" placeholder="Buscar por cliente, fecha o estado..." class="input-search">
-                <select>
-                    <option value="">Estado</option>
-                    <option value="pendiente">Pendiente</option>
-                    <option value="entregado">Entregado</option>
-                    <option value="cancelado">Cancelado</option>
+            <form class="filters-form" method="get" action="SrvListarPedidoDashboard">
+                <input type="text" name="cliente" value="<%= request.getParameter("cliente") != null ? request.getParameter("cliente") : "" %>" placeholder="Buscar por cliente..." class="input-search">
+                <select name="estado">
+                    <option value="">Todos</option>
+                    <option value="pendiente" <%= "pendiente".equals(request.getParameter("estado")) ? "selected" : "" %>>Pendiente</option>
+                    <option value="entregado" <%= "entregado".equals(request.getParameter("estado")) ? "selected" : "" %>>Entregado</option>
+                    <option value="cancelado" <%= "cancelado".equals(request.getParameter("estado")) ? "selected" : "" %>>Cancelado</option>
                 </select>
-                <input type="date" placeholder="Fecha" class="input-date">
+                <input type="date" name="fecha" value="<%= request.getParameter("fecha") != null ? request.getParameter("fecha") : "" %>" class="input-date">
                 <button type="submit" class="btn-filtrar">Filtrar</button>
             </form>
         </section>
@@ -54,46 +68,52 @@
                 </tr>
                 </thead>
                 <tbody>
+                <% 
+                  List<PedidoDTO> pedidos = (List<PedidoDTO>) request.getAttribute("pedidos");
+                  Map<Integer, String> nombresUsuarios = (Map<Integer, String>) request.getAttribute("nombresUsuarios");
+                  if (pedidos != null && !pedidos.isEmpty()) {
+                    for (PedidoDTO p : pedidos) {
+                %>
                 <tr>
-                    <td>201</td>
-                    <td>Juan Pérez</td>
-                    <td>2024-06-10 13:45</td>
-                    <td>S/ 85.00</td>
-                    <td><span class="estado pendiente">Pendiente</span></td>
-                    <td>Efectivo</td>
+                    <td><%= p.getIdPedid() %></td>
+                    <td><%= nombresUsuarios.get(p.getUsuario_id()) %></td>
+                    <td><%= p.getFecha() != null && p.getFecha().length() >= 16 ? p.getFecha().substring(0,16) : p.getFecha() %></td>
+                    <td>S/ <%= String.format("%.2f", p.getTotal()) %></td>
                     <td>
-                        <button class="btn-accion entregar">Entregar</button>
-                        <button class="btn-accion cancelar">Cancelar</button>
-                        <button class="btn-accion ver">Ver</button>
+                      <span class="estado <%= p.getEstado().toLowerCase().trim() %>">
+                        <%= p.getEstado().substring(0,1).toUpperCase() + p.getEstado().substring(1).toLowerCase() %>
+                      </span>
+                    </td>
+                    <td><%= p.getMetodo_pago_id() == 1 ? "Efectivo" : p.getMetodo_pago_id() == 2 ? "Tarjeta" : p.getMetodo_pago_id() == 3 ? "Yape" : "-" %></td>
+                    <td>
+                        <% if ("pendiente".equals(p.getEstado())) { %>
+                            <form method="post" action="SrvActualizarEstadoPedido" style="display:inline;">
+                                <input type="hidden" name="id" value="<%= p.getIdPedid() %>" />
+                                <input type="hidden" name="estado" value="entregado" />
+                                <button type="submit" class="btn-accion entregar">Entregar</button>
+                            </form>
+                            <form method="post" action="SrvActualizarEstadoPedido" style="display:inline;">
+                                <input type="hidden" name="id" value="<%= p.getIdPedid() %>" />
+                                <input type="hidden" name="estado" value="cancelado" />
+                                <button type="submit" class="btn-accion cancelar">Cancelar</button>
+                            </form>
+                        <% } else if ("entregado".equals(p.getEstado())) { %>
+                            <!-- No acciones -->
+                        <% } else if ("cancelado".equals(p.getEstado())) { %>
+                            <!-- No acciones -->
+                        <% } %>
                     </td>
                 </tr>
-                <tr>
-                    <td>202</td>
-                    <td>María López</td>
-                    <td>2024-06-10 14:20</td>
-                    <td>S/ 120.00</td>
-                    <td><span class="estado entregado">Entregado</span></td>
-                    <td>Tarjeta</td>
-                    <td>
-                        <button class="btn-accion ver">Ver</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>203</td>
-                    <td>Carlos Ruiz</td>
-                    <td>2024-06-11 12:10</td>
-                    <td>S/ 60.00</td>
-                    <td><span class="estado cancelado">Cancelado</span></td>
-                    <td>Yape</td>
-                    <td>
-                        <button class="btn-accion ver">Ver</button>
-                    </td>
-                </tr>
+                <%   }
+                  } else { %>
+                <tr><td colspan="7" style="text-align:center;">No hay pedidos registrados.</td></tr>
+                <% } %>
                 </tbody>
             </table>
         </section>
     </main>
 </div>
 <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+<script src="${pageContext.request.contextPath}/js/scriptPedido.js"></script>
 </body>
 </html>

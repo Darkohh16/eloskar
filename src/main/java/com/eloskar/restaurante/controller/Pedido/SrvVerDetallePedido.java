@@ -1,4 +1,4 @@
-package com.eloskar.restaurante.controller.Carrito;
+package com.eloskar.restaurante.controller.Pedido;
 
 import com.eloskar.restaurante.DTO.PedidoDetalleDTO;
 import com.eloskar.restaurante.services.PedidoService;

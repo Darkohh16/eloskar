@@ -266,6 +266,9 @@ body {
 .estado.entregado {
     background: #1976d2;
 }
+.estado.cancelado {
+    background: #e53935;
+}
 
 /* --- Botones de acción --- */
 .btn-accion {

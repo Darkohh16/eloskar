@@ -100,4 +100,72 @@ public class ReservaDAO {
             throw new RuntimeException("Error al eliminar reserva: " + ex.getMessage(), ex);
         }
     }
+
+    public List<ReservaDTO> buscarReservasPorFiltros(String cliente, String estado, String fecha) {
+        StringBuilder sql = new StringBuilder("SELECT r.idReser, r.usuario_id, r.fecha, r.hora, r.cantidad_personas, r.estado FROM reservas r INNER JOIN usuarios u ON r.usuario_id = u.idUser WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+        if (cliente != null && !cliente.trim().isEmpty()) {
+            sql.append(" AND u.nombre LIKE ?");
+            params.add("%" + cliente.trim() + "%");
+        }
+        if (estado != null && !estado.trim().isEmpty()) {
+            sql.append(" AND r.estado = ?");
+            params.add(estado.trim());
+        }
+        if (fecha != null && !fecha.trim().isEmpty()) {
+            sql.append(" AND r.fecha = ?");
+            params.add(fecha.trim());
+        }
+        sql.append(" ORDER BY r.fecha DESC, r.hora DESC");
+        List<ReservaDTO> reservas = new ArrayList<>();
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                pstm.setObject(i + 1, params.get(i));
+            }
+            try (ResultSet rs = pstm.executeQuery()) {
+                while (rs.next()) {
+                    ReservaDTO dto = new ReservaDTO();
+                    dto.setIdReser(rs.getInt("idReser"));
+                    dto.setUsuario_id(rs.getInt("usuario_id"));
+                    dto.setFecha(rs.getString("fecha"));
+                    dto.setHora(rs.getString("hora"));
+                    dto.setCantidad_personas(rs.getInt("cantidad_personas"));
+                    dto.setEstado(rs.getString("estado"));
+                    reservas.add(dto);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al buscar reservas por filtros: " + ex.getMessage(), ex);
+        }
+        return reservas;
+    }
+
+    public int contarReservasHoy() {
+        String sql = "SELECT COUNT(*) FROM reservas WHERE fecha = CONVERT(date, GETDATE())";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar reservas de hoy: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
+
+    public int contarReservasPendientes() {
+        String sql = "SELECT COUNT(*) FROM reservas WHERE estado = 'pendiente'";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar reservas pendientes: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
 }

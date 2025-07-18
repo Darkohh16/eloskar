@@ -18,8 +18,8 @@
     <span class="logo-text">El Oskar</span>
   </div>
   <nav class="nav">
-    <% if (session != null && "admin".equals(rol)) { %>
-      <a href="jsp/dashboardJSP/DashboardPrincipal.jsp"><span class="icon">&#128200;</span> Dashboard</a>
+    <% if (session != null && "admin".equals(rol) || "encargado".equals(rol)) { %>
+      <a href="SrvDashboardPrincipal"><span class="icon">&#128200;</span> Dashboard</a>
     <% } %>
     <a href="SrvBuscarProducto"><span class="icon">&#129424;</span> Carta</a>
     <a href="SrvListarReservas"><span class="icon">&#128197;</span> Reservas</a>

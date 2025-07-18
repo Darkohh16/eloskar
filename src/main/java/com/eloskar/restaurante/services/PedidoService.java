@@ -38,4 +38,28 @@ public class PedidoService {
     public List<PedidoDetalleDTO> listarDetallesPorPedido(int pedidoId) {
         return pedidoDetalleDAO.listarDetallesPorPedido(pedidoId);
     }
+
+    public List<PedidoDTO> buscarPedidosPorFiltros(String cliente, String estado, String fecha) {
+        return pedidoDAO.buscarPedidosPorFiltros(cliente, estado, fecha);
+    }
+
+    public boolean actualizarEstado(int idPedid, String nuevoEstado) {
+        return pedidoDAO.actualizarEstado(idPedid, nuevoEstado) > 0;
+    }
+
+    public List<PedidoDTO> listarTodosPedidos() {
+        return pedidoDAO.listarTodosPedidos();
+    }
+
+    public int contarPedidosHoy() {
+        return pedidoDAO.contarPedidosHoy();
+    }
+
+    public double sumarIngresosHoy() {
+        return pedidoDAO.sumarIngresosHoy();
+    }
+
+    public int contarPedidosPendientes() {
+        return pedidoDAO.contarPedidosPendientes();
+    }
 } 
