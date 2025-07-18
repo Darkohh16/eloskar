@@ -38,7 +38,7 @@ public class SrvEncontrarUsuario extends HttpServlet {
         if (id == 0) {
             response.setContentType("text/html;charset=UTF-8");
             response.getWriter().write("<script>alert('Usuario o contraseña incorrecta.'); " +
-                    "window.location='/restaurante_war_exploded/jsp/eloskarJSP/login/login.jsp';</script>");
+                    "window.location='/jsp/eloskarJSP/login/login.jsp';</script>");
         } else {
             HttpSession session = request.getSession();
             session.setAttribute("idUser", id);

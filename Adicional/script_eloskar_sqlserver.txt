@@ -1,0 +1,120 @@
+-- Crear la base de datos si no existe
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'eloskar')
+BEGIN
+    CREATE DATABASE eloskar;
+END;
+GO
+
+USE eloskar;
+GO
+
+-- Tabla usuarios
+CREATE TABLE usuarios (
+    idUser INT IDENTITY(1,1) PRIMARY KEY,
+    dni VARCHAR(8) NOT NULL,
+    celular VARCHAR(9) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    rol VARCHAR(20) NOT NULL CHECK (rol IN ('cliente', 'encargado', 'admin')),
+    fecha_registro DATETIME2 DEFAULT SYSDATETIME()
+);
+GO
+
+-- Tabla categorias
+CREATE TABLE categorias (
+    idCat INT IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion NVARCHAR(MAX)
+);
+GO
+
+-- Tabla productos
+CREATE TABLE productos (
+    idProd INT IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion NVARCHAR(MAX),
+    precio DECIMAL(10,2) NOT NULL,
+    imagen VARCHAR(255),
+    disponible BIT DEFAULT 1,
+    categoria_id INT,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(idCat)
+);
+GO
+
+-- Tabla reservas
+CREATE TABLE reservas (
+    idReser INT IDENTITY(1,1) PRIMARY KEY,
+    usuario_id INT,
+    fecha DATE NOT NULL,
+    hora TIME NOT NULL,
+    cantidad_personas INT NOT NULL,
+    estado VARCHAR(20) DEFAULT 'pendiente' CHECK (estado IN ('pendiente', 'confirmada', 'cancelada')),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(idUser)
+);
+GO
+
+-- Tabla metodos_pago
+CREATE TABLE metodos_pago (
+    idPago INT IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+GO
+
+-- Tabla pedidos
+CREATE TABLE pedidos (
+    idPedid INT IDENTITY(1,1) PRIMARY KEY,
+    usuario_id INT,
+    fecha DATETIME2 DEFAULT SYSDATETIME(),
+    total DECIMAL(10,2),
+    estado VARCHAR(20) DEFAULT 'pendiente' CHECK (estado IN ('pendiente', 'entregado', 'cancelado')),
+    metodo_pago_id INT,
+    tipo_entrega VARCHAR(20) NOT NULL DEFAULT 'delivery' CHECK (tipo_entrega IN ('delivery', 'pickup')),
+    direccion NVARCHAR(255) NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(idUser),
+    FOREIGN KEY (metodo_pago_id) REFERENCES metodos_pago(idPago)
+);
+GO
+
+-- Tabla pedido_detalle
+CREATE TABLE pedido_detalle (
+    idDetPedid INT IDENTITY(1,1) PRIMARY KEY,
+    pedido_id INT,
+    plato_id INT,
+    cantidad INT NOT NULL,
+    precio_unitario DECIMAL(10,2),
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(idPedid),
+    FOREIGN KEY (plato_id) REFERENCES productos(idProd)
+);
+GO
+CREATE TABLE carritos (
+    idCarrito INT IDENTITY(1,1) PRIMARY KEY,
+    usuario_id INT NOT NULL UNIQUE, -- cada usuario solo tiene un carrito activo
+    creado_en DATETIME2 DEFAULT SYSDATETIME(),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(idUser)
+);
+GO
+CREATE TABLE carrito_detalle (
+    idDetalle INT IDENTITY(1,1) PRIMARY KEY,
+    carrito_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    cantidad INT NOT NULL CHECK (cantidad > 0),
+    notas NVARCHAR(MAX),
+    FOREIGN KEY (carrito_id) REFERENCES carritos(idCarrito),
+    FOREIGN KEY (producto_id) REFERENCES productos(idProd)
+);
+GO
+
+-- INDICES
+
+-- 1. Índice para búsquedas por nombre (sin descripción)
+CREATE INDEX IX_productos_nombre ON productos (nombre);
+
+-- Índice para búsquedas por categoría
+CREATE INDEX IX_productos_categoria ON productos (categoria_id);
+
+-- Índice compuesto para búsquedas combinadas
+CREATE INDEX IX_productos_nombre_categoria ON productos (nombre, categoria_id);
+
+-- Índice para ordenamiento por ID
+CREATE INDEX IX_productos_id ON productos (idProd);
