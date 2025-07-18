@@ -20,4 +20,26 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+});
+
+// Modal de detalles de pedido (estático)
+document.addEventListener('DOMContentLoaded', function() {
+  var modal = document.getElementById('modalDetalles');
+  var cerrar = document.getElementById('cerrarModalDetalles');
+  var botones = document.querySelectorAll('.btn-detalles');
+  if (modal && cerrar && botones.length > 0) {
+    botones.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        modal.classList.add('active');
+      });
+    });
+    cerrar.addEventListener('click', function() {
+      modal.classList.remove('active');
+    });
+    window.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+      }
+    });
+  }
 }); 
