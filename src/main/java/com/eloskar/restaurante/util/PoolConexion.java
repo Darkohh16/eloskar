@@ -11,16 +11,30 @@ public class PoolConexion {
     private static final HikariDataSource dataSource;
 
     static {
-        Dotenv dotenv = Dotenv.configure()
-                .ignoreIfMissing()
-                .ignoreIfMalformed()
-                .load();
-        String url = dotenv.get("DB_URL");
-        String user = dotenv.get("DB_USER");
-        String pass = dotenv.get("DB_PASSWORD");
+        String url  = System.getenv("DB_URL");
+        String user = System.getenv("DB_USER");
+        String pass = System.getenv("DB_PASSWORD");
+
+        if (url == null || user == null || pass == null) {
+            Dotenv dotenv = Dotenv.configure()
+                    .ignoreIfMissing()
+                    .ignoreIfMalformed()
+                    .load();
+
+            if (url == null)  url  = dotenv.get("DB_URL");
+            if (user == null) user = dotenv.get("DB_USER");
+            if (pass == null) pass = dotenv.get("DB_PASSWORD");
+        }
+
+        if (url == null || user == null || pass == null) {
+            throw new IllegalStateException(
+                    "No se pudieron cargar las variables del entorno."
+            );
+        }
+
         String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
-        //Configuracion de Hikari
+        // Configuración de Hikari
         HikariConfig config = new HikariConfig();
         config.setDriverClassName(driver);
         config.setJdbcUrl(url);
@@ -31,15 +45,13 @@ public class PoolConexion {
         config.setConnectionTimeout(5000);
 
         dataSource = new HikariDataSource(config);
-
-
     }
 
     public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
 
-    public static void cerrarPool(){
+    public static void cerrarPool() {
         if (dataSource != null) {
             dataSource.close();
         }
