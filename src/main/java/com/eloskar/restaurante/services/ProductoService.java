@@ -79,4 +79,12 @@ public class ProductoService {
     public int contarProductosDeshabilitados() {
         return productoDAO.contarProductosDeshabilitados();
     }
+
+    public int contarTotalProductos() {
+        return productoDAO.contarTotalProductos();
+    }
+
+    public int contarProductosDisponibles() {
+        return productoDAO.contarProductosDisponibles();
+    }
 }
