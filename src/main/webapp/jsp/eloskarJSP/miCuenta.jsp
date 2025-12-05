@@ -17,27 +17,83 @@
 <jsp:include page="components/header.jsp" />
 
 <main class="micuenta-main">
-  <section class="perfil-section">
-    <h1 class="main-title">Mi Perfil</h1>
-    <form id="formPerfil" method="post" action="SrvActualizarPerfil">
-      <div class="perfil-form-vertical">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" value="<%= usuario != null ? usuario.getNombre() : "" %>" required>
-        <label for="correo">Correo:</label>
-        <input type="email" id="correo" name="correo" value="<%= usuario != null ? usuario.getCorreo() : "" %>" required>
-        <label for="celular">Celular:</label>
-        <input type="text" id="celular" name="celular" value="<%= usuario != null ? usuario.getCel() : "" %>" required pattern="[0-9]{9}">
-        <label for="dni">DNI:</label>
-        <input type="text" id="dni" name="dni" value="<%= usuario != null ? usuario.getDni() : "" %>" required pattern="[0-9]{8}">
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" placeholder="••••••••" required>
-      </div>
-      <button type="submit" class="btn-guardar">Guardar Cambios</button>
-    </form>
-  </section>
+  <h1 class="page-title">
+    <span class="icon-page">👤</span>
+    Mi Cuenta
+  </h1>
 
-  <section class="pedidos-section">
-    <h2 class="main-title">Mis Pedidos</h2>
+  <div class="micuenta-container">
+    <!-- Columna Izquierda: Mi Perfil -->
+    <section class="perfil-section">
+      <div class="perfil-card">
+        <h2 class="section-title">
+          <span class="icon-section">📋</span>
+          Mi Perfil
+        </h2>
+
+        <div class="usuario-avatar">
+          <div class="avatar-circle">
+            <%= usuario != null && usuario.getNombre() != null ? usuario.getNombre().substring(0, 1).toUpperCase() : "U" %>
+          </div>
+          <h3 class="usuario-nombre"><%= usuario != null ? usuario.getNombre() : "" %></h3>
+        </div>
+
+        <form id="formPerfil" method="post" action="SrvActualizarPerfil" class="perfil-form">
+          <div class="form-group">
+            <label for="nombre">
+              <span class="label-icon">👤</span>
+              Nombre Completo
+            </label>
+            <input type="text" id="nombre" name="nombre" value="<%= usuario != null ? usuario.getNombre() : "" %>" required placeholder="Ingresa tu nombre">
+          </div>
+
+          <div class="form-group">
+            <label for="correo">
+              <span class="label-icon">📧</span>
+              Correo Electrónico
+            </label>
+            <input type="email" id="correo" name="correo" value="<%= usuario != null ? usuario.getCorreo() : "" %>" required placeholder="tu@email.com">
+          </div>
+
+          <div class="form-group">
+            <label for="celular">
+              <span class="label-icon">📱</span>
+              Celular
+            </label>
+            <input type="text" id="celular" name="celular" value="<%= usuario != null ? usuario.getCel() : "" %>" required pattern="[0-9]{9}" placeholder="999999999">
+          </div>
+
+          <div class="form-group">
+            <label for="dni">
+              <span class="label-icon">🪪</span>
+              DNI
+            </label>
+            <input type="text" id="dni" name="dni" value="<%= usuario != null ? usuario.getDni() : "" %>" required pattern="[0-9]{8}" placeholder="12345678">
+          </div>
+
+          <div class="form-group">
+            <label for="password">
+              <span class="label-icon">🔒</span>
+              Contraseña
+            </label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+          </div>
+
+          <button type="submit" class="btn-guardar-perfil">
+            <span class="btn-icon">💾</span>
+            Guardar Cambios
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Columna Derecha: Mis Pedidos -->
+    <section class="pedidos-section">
+      <div class="pedidos-card">
+        <h2 class="section-title">
+          <span class="icon-section">🛍️</span>
+          Mis Pedidos
+        </h2>
     <table class="main-table">
       <thead>
         <tr>
@@ -60,8 +116,25 @@
               String fechaSolo = "";
               String horaMin = "";
               if (fecha != null && fecha.length() >= 16) {
-                fechaSolo = fecha.substring(0, 10); // yyyy-MM-dd
-                horaMin = fecha.substring(11, 16); // HH:mm
+                try {
+                  // Parse la fecha/hora desde el formato almacenado
+                  java.text.SimpleDateFormat sdfInput = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                  sdfInput.setTimeZone(java.util.TimeZone.getTimeZone("UTC")); // La BD guarda en UTC
+
+                  java.util.Date fechaDate = sdfInput.parse(fecha);
+
+                  // Convertir a zona horaria de Perú (UTC-5)
+                  java.text.SimpleDateFormat sdfOutput = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
+                  sdfOutput.setTimeZone(java.util.TimeZone.getTimeZone("America/Lima"));
+
+                  String fechaFormateada = sdfOutput.format(fechaDate);
+                  fechaSolo = fechaFormateada.substring(0, 10);
+                  horaMin = fechaFormateada.substring(11, 16);
+                } catch (Exception e) {
+                  // Si hay error, usar el formato original
+                  fechaSolo = fecha.substring(0, 10);
+                  horaMin = fecha.substring(11, 16);
+                }
               }
             %>
             <%= fechaSolo %> <%= horaMin %>
@@ -99,8 +172,10 @@
         </tr>
         <% } %>
       </tbody>
-    </table>
-  </section>
+        </table>
+      </div>
+    </section>
+  </div>
 </main>
 
 <jsp:include page="components/footer.jsp" />
@@ -142,6 +217,7 @@
   </div>
 </div>
 
+<script src="js/mobileMenu.js"></script>
 <script src="js/scriptMiCuenta.js"></script>
 </body>
 </html> 
