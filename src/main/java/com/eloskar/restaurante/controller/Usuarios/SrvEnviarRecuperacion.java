@@ -5,6 +5,7 @@ import com.eloskar.restaurante.DTO.UsuarioDTO;
 import com.eloskar.restaurante.services.TokensService;
 import com.eloskar.restaurante.services.UsuarioService;
 import com.eloskar.restaurante.util.CorreoUtil;
+import com.eloskar.restaurante.util.JspRenderer;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -40,6 +41,7 @@ public class SrvEnviarRecuperacion extends HttpServlet {
         int idUser = service.obtenerId(request.getParameter("correo"));
 
         if (idUser != 0) {
+
             String token = UUID.randomUUID().toString();
             LocalDateTime expiracion = LocalDateTime.now().plusMinutes(60);
             dto.setToken(token);
@@ -53,16 +55,21 @@ public class SrvEnviarRecuperacion extends HttpServlet {
             String linkRecuperacion = baseUrl + "/jsp/eloskarJSP/login/restablecer.jsp?token=" + token;
 
             String asunto = "Recupera tu contraseña";
-            String cuerpo = "Hola " + dtoU.getNombre() + ",\n\n"
-                    + "Haz clic en el siguiente enlace para restablecer tu contraseña:\n"
-                    + linkRecuperacion + "\n\n"
-                    + "Este enlace expirará en 1 hora.";
 
-            CorreoUtil.enviar(dtoU.getCorreo(), asunto, cuerpo);
+            // 🔹 PASAR DATOS AL JSP
+            request.setAttribute("nombre", dtoU.getNombre());
+            request.setAttribute("url", linkRecuperacion);
+
+            // 🔹 RENDERIZAR EL JSP A STRING
+            String cuerpoHtml = JspRenderer.renderJSP(request, response, "/jsp/eloskarJSP/login/correoRecuperacion.jsp");
+
+            // 🔹 ENVIAR HTML
+            CorreoUtil.enviarHtml(dtoU.getCorreo(), asunto, cuerpoHtml);
 
             RequestDispatcher dp = request.getRequestDispatcher("/jsp/eloskarJSP/login/mensaje.jsp");
             dp.forward(request, response);
         }
+
 
     }
 }

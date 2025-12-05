@@ -167,15 +167,17 @@
                     <div class="modal-content">
                         <span class="close" id="cerrar-modal-agregar">&times;</span>
                         <h2>Agregar Producto</h2>
-                        <form id="form-agregar-producto" method="post">
+                        <form id="form-agregar-producto" method="post" enctype="multipart/form-data">
                             <label>Nombre:</label>
                             <input type="text" id="agregar-nombre" name="nombre" required>
                             <label>Descripcion:</label>
                             <input type="text" id="agregar-descripcion" name="descripcion" required>
                             <label>Precio:</label>
                             <input type="text" id="agregar-precio" name="precio" required>
-                            <label>Ruta Imagen:</label>
-                            <input type="text" id="agregar-rImagen" name="rImagen" required>
+                            <label>Imagen:</label>
+                            <input type="file" id="agregar-rImagen" name="imagen" accept="image/*" required>
+                            <label>Ruta Imagen (opcional, URL):</label>
+                            <input type="text" id="agregar-rImagen-texto" name="rImagen">
                             <label>Categoria:</label>
                             <select  id="agregar-cat" name="cat" required>
                                 <%

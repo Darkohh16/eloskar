@@ -18,31 +18,55 @@
 <jsp:include page="components/header.jsp" />
 
 <main class="reservas-main">
-  <h1 class="main-title">Reservas</h1>
+  <h1 class="main-title-reservas">Reservas</h1>
 
-  <section class="form-reserva-section">
-    <h2 class="titulo-seccion-reserva">Realizar una nueva reserva</h2>
-    <form id="formReserva" method="post" action="SrvAgregarReserva">
-      <div class="form-reserva-flex">
-        <div class="form-reserva-campo-200">
-          <label for="fecha">Fecha:</label>
-          <input type="date" id="fecha" name="fecha" required min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>">
+  <div class="reservas-container">
+    <!-- Formulario de Reserva - Izquierda -->
+    <section class="form-reserva-section">
+      <h2 class="titulo-seccion-reserva">
+        <span class="icon-reserva">📅</span>
+        Realizar una Reserva
+      </h2>
+      <form id="formReserva" method="post" action="SrvAgregarReserva">
+        <div class="form-reserva-grupo">
+          <label for="fecha">
+            <span class="label-icon">📆</span>
+            Fecha de Reserva
+          </label>
+          <input type="date" id="fecha" name="fecha" required min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" placeholder="Selecciona una fecha">
         </div>
-        <div class="form-reserva-campo-120">
-          <label for="hora">Hora:</label>
-          <input type="time" id="hora" name="hora" required>
+
+        <div class="form-reserva-grupo">
+          <label for="hora">
+            <span class="label-icon">🕐</span>
+            Hora
+          </label>
+          <input type="time" id="hora" name="hora" required placeholder="Selecciona la hora">
         </div>
-        <div class="form-reserva-campo-120">
-          <label for="personas">Personas:</label>
-          <input type="number" id="personas" name="personas" min="1" max="20" required>
+
+        <div class="form-reserva-grupo">
+          <label for="personas">
+            <span class="label-icon">👥</span>
+            Número de Personas
+          </label>
+          <input type="number" id="personas" name="personas" min="1" max="20" required placeholder="¿Cuántas personas?">
         </div>
-      </div>
-      <button type="submit" class="btn-finalizar mt-18">Reservar</button>
-    </form>
-  </section>
-  <section class="tabla-reservas-section">
-    <h2 class="titulo-tabla-reserva">Mis Reservas</h2>
-    <table class="main-table">
+
+        <button type="submit" class="btn-reservar">
+          <span class="btn-icon">✓</span>
+          Confirmar Reserva
+        </button>
+      </form>
+    </section>
+
+    <!-- Historial de Reservas - Derecha -->
+    <section class="tabla-reservas-section">
+      <h2 class="titulo-tabla-reserva">
+        <span class="icon-historial">📋</span>
+        Mis Reservas
+      </h2>
+      <div class="tabla-wrapper">
+        <table class="main-table">
       <thead>
       <tr>
         <th>ID</th>
@@ -70,12 +94,15 @@
       <tr><td colspan="5" class="tabla-reservas-vacia">No tienes reservas registradas.</td></tr>
       <% } %>
       </tbody>
-    </table>
-  </section>
+        </table>
+      </div>
+    </section>
+  </div>
 </main>
 
 <jsp:include page="components/footer.jsp" />
 
+<script src="js/mobileMenu.js"></script>
 <script src="js/scriptReserva.js"></script>
 </body>
 </html> 
