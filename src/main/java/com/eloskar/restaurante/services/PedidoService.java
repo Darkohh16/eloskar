@@ -62,4 +62,24 @@ public class PedidoService {
     public int contarPedidosPendientes() {
         return pedidoDAO.contarPedidosPendientes();
     }
-} 
+
+    public int contarPedidosEntregados() {
+        return pedidoDAO.contarPedidosEntregados();
+    }
+
+    public double sumarIngresosTotales() {
+        return pedidoDAO.sumarIngresosTotales();
+    }
+
+    public double calcularPromedioVenta() {
+        return pedidoDAO.calcularPromedioVenta();
+    }
+
+    public int contarPedidosMes() {
+        return pedidoDAO.contarPedidosMes();
+    }
+
+    public double sumarIngresosMes() {
+        return pedidoDAO.sumarIngresosMes();
+    }
+}

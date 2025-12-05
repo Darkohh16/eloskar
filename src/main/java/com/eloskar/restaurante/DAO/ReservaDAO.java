@@ -168,4 +168,46 @@ public class ReservaDAO {
         }
         return 0;
     }
+
+    public int contarReservasConfirmadas() {
+        String sql = "SELECT COUNT(*) FROM reservas WHERE estado = 'confirmada'";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar reservas confirmadas: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
+
+    public int contarReservasMes() {
+        String sql = "SELECT COUNT(*) FROM reservas WHERE MONTH(fecha) = MONTH(GETDATE()) AND YEAR(fecha) = YEAR(GETDATE())";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar reservas del mes: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
+
+    public int contarTotalPersonasHoy() {
+        String sql = "SELECT SUM(cantidad_personas) FROM reservas WHERE fecha = CONVERT(date, GETDATE()) AND estado IN ('pendiente', 'confirmada')";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar total de personas hoy: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
 }

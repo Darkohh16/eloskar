@@ -214,4 +214,74 @@ public class PedidoDAO {
         }
         return 0;
     }
+
+    public int contarPedidosEntregados() {
+        String sql = "SELECT COUNT(*) FROM pedidos WHERE estado = 'entregado'";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar pedidos entregados: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
+
+    public double sumarIngresosTotales() {
+        String sql = "SELECT SUM(total) FROM pedidos WHERE estado = 'entregado'";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al sumar ingresos totales: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
+
+    public double calcularPromedioVenta() {
+        String sql = "SELECT AVG(total) FROM pedidos WHERE estado = 'entregado'";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al calcular promedio de venta: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
+
+    public int contarPedidosMes() {
+        String sql = "SELECT COUNT(*) FROM pedidos WHERE MONTH(fecha) = MONTH(GETDATE()) AND YEAR(fecha) = YEAR(GETDATE())";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar pedidos del mes: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
+
+    public double sumarIngresosMes() {
+        String sql = "SELECT SUM(total) FROM pedidos WHERE estado = 'entregado' AND MONTH(fecha) = MONTH(GETDATE()) AND YEAR(fecha) = YEAR(GETDATE())";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al sumar ingresos del mes: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
 }

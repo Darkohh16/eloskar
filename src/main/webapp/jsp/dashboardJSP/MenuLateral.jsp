@@ -14,7 +14,7 @@
   <h2>El Oskar</h2>
   <nav>
     <ul>
-      <li><a href="jsp/dashboardJSP/DashboardPrincipal.jsp">Dashboard</a></li>
+      <li><a href="SrvDashboardPrincipal">Dashboard</a></li>
       <li><a href="SrvListarReservasDashboard">Reservas</a></li>
       <li><a href="SrvListarPedidoDashboard">Pedidos</a></li>
       <li><a href="SrvBuscarProducto?destino=dashboard">Productos</a></li>
