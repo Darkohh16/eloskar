@@ -4,13 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version> <!-- Usa la versión estable más reciente -->
-        <relativePath/> <!-- Lookup parent from repository -->
-    </parent>
-
     <groupId>com.eloskar</groupId>
     <artifactId>restaurante</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -25,86 +18,75 @@
     </properties>
 
     <dependencies>
+        <!-- JDBC: solo deja lo que realmente uses -->
+        <!-- Si ya no usas MySQL, puedes borrar esto -->
+        <!--
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
+        -->
 
-
-        <!-- SPRING BOOT WEB -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- SQL Server JDBC Driver (ya lo tienes, está bien) -->
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>12.6.1.jre11</version>
         </dependency>
 
-        <!-- PRUEBAS -->
+        <!-- Pool de conexiones -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.0.1</version>
         </dependency>
-        <!-- ================================================================== -->
 
+        <!-- Dotenv para leer variables (.env o env del sistema) -->
         <dependency>
             <groupId>io.github.cdimascio</groupId>
             <artifactId>dotenv-java</artifactId>
             <version>2.2.0</version>
         </dependency>
 
+        <!-- Jakarta para Tomcat 10 (Servlet 6 + JSP + JSTL) -->
         <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>11.0.0-M4</version>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet.jsp</groupId>
+            <artifactId>jakarta.servlet.jsp-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>3.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.772</version>
+        </dependency>
+
         <dependency>
             <groupId>jakarta.mvc</groupId>
             <artifactId>jakarta.mvc-api</artifactId>
             <version>2.1.0</version>
         </dependency>
-        <!-- Simple Java Mail (envío de correos simplificado) -->
+
+        <!-- Simple Java Mail (para correos) -->
         <dependency>
             <groupId>org.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
             <version>8.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <version>12.6.1.jre11</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>5.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
     </dependencies>
 
@@ -113,30 +95,16 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <excludes>
-                    <exclude>.env</exclude>  <!-- evita que .env se empaquete -->
+                    <exclude>.env</exclude>
                 </excludes>
             </resource>
         </resources>
-
 
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
-            </plugin>
-
-            <!-- Plugin WAR -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
-            </plugin>
-
-            <!-- Plugin SPRING BOOT -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

@@ -28,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reservas - Restaurante</title>
   <base href="${pageContext.request.contextPath}/">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/stylesDashboard.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -84,6 +84,7 @@
           <td><%= r.getCantidad_personas() %></td>
           <td><span class="estado <%= r.getEstado() %>"><%= r.getEstado().substring(0,1).toUpperCase() + r.getEstado().substring(1) %></span></td>
           <td>
+            <div class="actions-container">
             <% if ("pendiente".equals(r.getEstado())) { %>
               <form method="post" action="SrvActualizarEstadoReserva" style="display:inline;">
                 <input type="hidden" name="id" value="<%= r.getIdReser() %>" />
@@ -101,7 +102,10 @@
                 <input type="hidden" name="estado" value="cancelada" />
                 <button type="submit" class="btn-accion cancelar">Cancelar</button>
               </form>
+            <% } else { %>
+              <span style="color: var(--text-light); font-size: 0.85em;">Sin acciones</span>
             <% } %>
+            </div>
           </td>
         </tr>
         <%   }

@@ -48,4 +48,16 @@ public class ReservaService {
     public int contarReservasPendientes() {
         return reservaDAO.contarReservasPendientes();
     }
+
+    public int contarReservasConfirmadas() {
+        return reservaDAO.contarReservasConfirmadas();
+    }
+
+    public int contarReservasMes() {
+        return reservaDAO.contarReservasMes();
+    }
+
+    public int contarTotalPersonasHoy() {
+        return reservaDAO.contarTotalPersonasHoy();
+    }
 }

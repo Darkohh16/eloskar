@@ -250,4 +250,32 @@ public class ProductoDAO {
         }
         return 0;
     }
+
+    public int contarTotalProductos() {
+        String sql = "SELECT COUNT(*) FROM productos";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar total de productos: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
+
+    public int contarProductosDisponibles() {
+        String sql = "SELECT COUNT(*) FROM productos WHERE disponible = 1";
+        try (Connection con = PoolConexion.getConnection();
+             PreparedStatement pstm = con.prepareStatement(sql);
+             ResultSet rs = pstm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error al contar productos disponibles: " + ex.getMessage(), ex);
+        }
+        return 0;
+    }
 }
