@@ -23,4 +23,20 @@ public class CorreoUtil {
 
         mailer.sendMail(email);
     }
+
+    public static void enviarHtml(String destino, String asunto, String cuerpoHtml) {
+        Email email = EmailBuilder.startingBlank()
+                .from("El Oskar", "tu-correo@gmail.com")
+                .to("Usuario", destino)
+                .withSubject(asunto)
+                .withHTMLText(cuerpoHtml)
+                .buildEmail();
+
+        Mailer mailer = MailerBuilder
+                .withSMTPServer("smtp.gmail.com", 587, "eloskarpruebas@gmail.com", "ixup rmuw dbih vhop")
+                .withTransportStrategy(TransportStrategy.SMTP_TLS)
+                .buildMailer();
+
+        mailer.sendMail(email);
+    }
 }
