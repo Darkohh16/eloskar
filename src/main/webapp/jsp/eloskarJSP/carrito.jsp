@@ -26,172 +26,75 @@
 
 <main class="carrito-main">
   <div class="carrito-container">
-    <h1 class="carrito-title">
-      <span class="icon-carrito">🛒</span>
-      Mi Carrito de Compras
-    </h1>
-
-    <%
-      double subtotal = 0;
-      if (detalles != null && !detalles.isEmpty()) {
-        for (CarritoDetalleDTO det : detalles) {
-          ProductoDTO prod = productoService.obtenerProductoPorId(det.getProducto_id());
-          if (prod == null) continue;
-          double precio = prod.getPrecio();
-          subtotal += precio * det.getCantidad();
-        }
-      }
-    %>
-
-    <% if (detalles != null && !detalles.isEmpty()) { %>
+    <h1 class="carrito-title">Mi Carrito</h1>
+    
     <div class="carrito-content">
-      <!-- Columna Izquierda: Productos -->
-      <div class="productos-section">
-        <div class="productos-header">
-          <h2>
-            <span class="icon-productos">📦</span>
-            Tus Productos (<%= detalles.size() %>)
-          </h2>
-          <a href="SrvBuscarProducto" class="btn-seguir-comprando-mobile">
-            <span class="icon-volver">←</span>
-            Seguir Comprando
-          </a>
-        </div>
-
-        <div class="productos-lista">
-          <%
+      <div class="productos-lista">
+        <h2>Productos (<%= detalles != null ? detalles.size() : 0 %>)</h2>
+        <% 
+          double subtotal = 0;
+          if (detalles != null && !detalles.isEmpty()) {
             for (CarritoDetalleDTO det : detalles) {
               ProductoDTO prod = productoService.obtenerProductoPorId(det.getProducto_id());
               if (prod == null) continue;
               double precio = prod.getPrecio();
-              double subtotalItem = precio * det.getCantidad();
-          %>
-          <div class="producto-card" data-producto-id="<%= prod.getIdProd() %>">
-            <div class="producto-imagen">
-              <img src="<%= prod.getImagen() %>" alt="<%= prod.getNombre() %>">
-            </div>
-
-            <div class="producto-info">
-              <h3 class="producto-nombre"><%= prod.getNombre() %></h3>
-              <p class="producto-descripcion"><%= prod.getDescripcion() %></p>
-              <div class="producto-precio-unit">
-                <span class="label-precio">Precio unitario:</span>
-                <span class="precio-valor" data-precio-unitario="<%= precio %>">S/. <%= String.format("%.2f", precio) %></span>
-              </div>
-            </div>
-
-            <div class="producto-controles">
-              <div class="cantidad-control">
-                <form action="SrvActualizarDetalleCarrito" method="post" class="form-cantidad">
-                  <input type="hidden" name="idDetalle" value="<%= det.getIdDetalle() %>"/>
-                  <input type="hidden" name="cantidad" value="<%= det.getCantidad() %>"/>
-                  <button name="accion" value="restar" class="btn-cantidad btn-menos" type="submit">
-                    <span>−</span>
-                  </button>
-                </form>
-                <span class="cantidad-valor"><%= det.getCantidad() %></span>
-                <form action="SrvActualizarDetalleCarrito" method="post" class="form-cantidad">
-                  <input type="hidden" name="idDetalle" value="<%= det.getIdDetalle() %>"/>
-                  <input type="hidden" name="cantidad" value="<%= det.getCantidad() %>"/>
-                  <button name="accion" value="sumar" class="btn-cantidad btn-mas" type="submit">
-                    <span>+</span>
-                  </button>
-                </form>
-              </div>
-
-              <div class="producto-subtotal">
-                <span class="label-subtotal">Subtotal:</span>
-                <span class="subtotal-valor">S/. <%= String.format("%.2f", subtotalItem) %></span>
-              </div>
-
-              <form action="SrvActualizarDetalleCarrito" method="post" class="form-eliminar">
-                <input type="hidden" name="idDetalle" value="<%= det.getIdDetalle() %>"/>
-                <input type="hidden" name="cantidad" value="<%= det.getCantidad() %>"/>
-                <button name="accion" value="eliminar" class="btn-eliminar" type="submit" title="Eliminar producto">
-                  <span class="icon-eliminar">🗑️</span>
-                  <span class="text-eliminar">Eliminar</span>
-                </button>
-              </form>
+              subtotal += precio * det.getCantidad();
+        %>
+        <div class="producto-item" data-producto-id="<%= prod.getIdProd() %>">
+          <div class="producto-imagen">
+            <img src="<%= prod.getImagen() %>" alt="<%= prod.getNombre() %>">
+          </div>
+          <div class="producto-info">
+            <h3><%= prod.getNombre() %></h3>
+            <p><%= prod.getDescripcion() %></p>
+            <div class="producto-precio">
+              <span class="precio" data-precio-unitario="<%= precio %>">S/. <%= precio %></span>
             </div>
           </div>
-          <% } %>
+          <div class="producto-acciones">
+            <form action="SrvActualizarDetalleCarrito" method="post" style="display:inline;">
+              <input type="hidden" name="idDetalle" value="<%= det.getIdDetalle() %>"/>
+              <input type="hidden" name="cantidad" value="<%= det.getCantidad() %>"/>
+              <button name="accion" value="restar" class="btn-cantidad">-</button>
+            </form>
+            <span class="cantidad"><%= det.getCantidad() %></span>
+            <form action="SrvActualizarDetalleCarrito" method="post" style="display:inline;">
+              <input type="hidden" name="idDetalle" value="<%= det.getIdDetalle() %>"/>
+              <input type="hidden" name="cantidad" value="<%= det.getCantidad() %>"/>
+              <button name="accion" value="sumar" class="btn-cantidad">+</button>
+            </form>
+            <form action="SrvActualizarDetalleCarrito" method="post" style="display:inline;">
+              <input type="hidden" name="idDetalle" value="<%= det.getIdDetalle() %>"/>
+              <input type="hidden" name="cantidad" value="<%= det.getCantidad() %>"/>
+              <button name="accion" value="eliminar" class="btn-eliminar">
+                <span class="icon-eliminar">🗑️</span>
+              </button>
+            </form>
+          </div>
         </div>
+        <%   }
+          } else { %>
+        <p>No hay productos en el carrito.</p>
+        <% } %>
       </div>
-
-      <!-- Columna Derecha: Resumen y Datos -->
-      <div class="resumen-section">
-        <!-- Resumen del Pedido -->
-        <div class="resumen-card">
-          <h2 class="resumen-title">
-            <span class="icon-resumen">💰</span>
-            Resumen del Pedido
-          </h2>
-
-          <div class="resumen-detalles">
-            <div class="resumen-linea">
-              <span class="resumen-label">Subtotal (<%= detalles.size() %> producto<%= detalles.size() > 1 ? "s" : "" %>):</span>
-              <span class="resumen-valor">S/. <%= String.format("%.2f", subtotal) %></span>
+      <section class="datos-pedido-section">
+        <h2 class="titulo-seccion">Datos para el pedido</h2>
+        <form id="formPedido" method="post" action="SrvConfirmarPedido">
+          <div class="form-pedido-flex">
+            <div class="form-pedido-entrega">
+              <input type="radio" id="entrega_delivery" name="tipo_entrega" value="delivery" checked>
+              <label for="entrega_delivery" class="label-radio-margin">Delivery a domicilio</label>
+              <input type="radio" id="entrega_pickup" name="tipo_entrega" value="pickup">
+              <label for="entrega_pickup">Recoger en local</label>
             </div>
-            <div class="resumen-linea">
-              <span class="resumen-label">Delivery:</span>
-              <span class="resumen-valor delivery-costo">S/. 5.00</span>
+            <div class="form-pedido-campo">
+              <label for="direccion">Dirección de entrega:</label>
+              <input type="text" id="direccion" name="direccion" placeholder="Ej: Av. Principal 123" required>
             </div>
-            <div class="resumen-separador"></div>
-            <div class="resumen-linea resumen-total">
-              <span class="resumen-label-total">Total:</span>
-              <span class="resumen-valor-total">S/. <%= String.format("%.2f", subtotal + 5.00) %></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Datos del Pedido -->
-        <div class="datos-pedido-card">
-          <h2 class="datos-title">
-            <span class="icon-datos">📋</span>
-            Datos de Entrega
-          </h2>
-
-          <form id="formPedido" method="post" action="SrvConfirmarPedido" class="form-pedido">
-            <div class="form-group tipo-entrega">
-              <label class="label-principal">
-                <span class="label-icon">🚚</span>
-                Tipo de Entrega
-              </label>
-              <div class="radio-group">
-                <label class="radio-option">
-                  <input type="radio" id="entrega_delivery" name="tipo_entrega" value="delivery" checked>
-                  <span class="radio-custom"></span>
-                  <span class="radio-label">
-                    <span class="radio-icon">🏠</span>
-                    Delivery a domicilio
-                  </span>
-                </label>
-                <label class="radio-option">
-                  <input type="radio" id="entrega_pickup" name="tipo_entrega" value="pickup">
-                  <span class="radio-custom"></span>
-                  <span class="radio-label">
-                    <span class="radio-icon">🏪</span>
-                    Recoger en local
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="direccion" class="label-principal">
-                <span class="label-icon">📍</span>
-                Dirección de Entrega
-              </label>
-              <input type="text" id="direccion" name="direccion" placeholder="Ej: Av. Principal 123, Pimentel" required class="input-field">
-            </div>
-
-            <div class="form-group">
-              <label for="metodo_pago" class="label-principal">
-                <span class="label-icon">💳</span>
-                Método de Pago
-              </label>
-              <select id="metodo_pago" name="metodo_pago" required class="select-field">
-                <option value="">Selecciona un método...</option>
+            <div class="form-pedido-campo">
+              <label for="metodo_pago">Método de pago:</label>
+              <select id="metodo_pago" name="metodo_pago" required>
+                <option value="">Selecciona...</option>
                 <% if (metodosPago != null) {
                      for (com.eloskar.restaurante.DTO.MetodoPagoDTO mp : metodosPago) { %>
                        <option value="<%= mp.getIdPago() %>"><%= mp.getNombre() %></option>
@@ -199,38 +102,21 @@
                    } %>
               </select>
             </div>
+            <div class="form-pedido-boton">
+              <button type="submit" class="btn-finalizar no-margin">Confirmar Pedido</button>
+            </div>
+          </div>
+        </form>
+      </section>
 
-            <button type="submit" class="btn-confirmar-pedido">
-              <span class="btn-icon">✓</span>
-              Confirmar Pedido
-            </button>
-          </form>
-        </div>
-
-        <!-- Botón Seguir Comprando -->
-        <a href="SrvBuscarProducto" class="btn-seguir-comprando">
-          <span class="icon-volver">←</span>
-          Seguir Comprando
-        </a>
+      <div class="resumen-pedido">
+        <a href="SrvBuscarProducto" class="btn-seguir-comprando">Seguir Comprando</a>
       </div>
     </div>
-    <% } else { %>
-    <!-- Carrito Vacío -->
-    <div class="carrito-vacio">
-      <div class="vacio-icon">🛒</div>
-      <h2>Tu carrito está vacío</h2>
-      <p>Agrega productos desde nuestra carta para comenzar tu pedido</p>
-      <a href="SrvBuscarProducto" class="btn-ir-carta">
-        <span class="icon-carta">🍽️</span>
-        Ver Carta
-      </a>
-    </div>
-    <% } %>
   </div>
 </main>
 
 <jsp:include page="components/footer.jsp" />
- <script src="js/mobileMenu.js"></script>
 <script src="js/scriptCarrito.js"></script>
 </body>
 </html> 

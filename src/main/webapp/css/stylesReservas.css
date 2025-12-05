@@ -1,450 +1,132 @@
-/* ============================================
-   ESTILOS MEJORADOS PARA RESERVAS
-   Layout de 2 columnas con tipografía elegante
-   ============================================ */
+/* Estilos para la vista de reservas */
 
-/* Importar fuentes elegantes */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
-
-/* Main Container */
 .reservas-main {
     min-height: 70vh;
-    padding: 120px 20px 60px 20px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e8eef3 100%);
+    padding: 40px 0 0 0;
 }
-
-/* Título Principal */
-.main-title-reservas {
-    text-align: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    color: #0a2463;
-    margin-bottom: 50px;
-    letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-/* Container de 2 Columnas */
-.reservas-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 30px;
-    align-items: start;
-}
-
-/* ============================================
-   SECCIÓN FORMULARIO - IZQUIERDA
-   ============================================ */
 
 .form-reserva-section {
     background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(10, 36, 99, 0.1);
-    padding: 40px 35px;
-    position: sticky;
-    top: 120px;
-    transition: all 0.3s ease;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 28px 32px 18px 32px;
+    margin-bottom: 32px;
 }
-
-.form-reserva-section:hover {
-    box-shadow: 0 15px 50px rgba(10, 36, 99, 0.15);
-    transform: translateY(-5px);
+.form-reserva-section label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #009fe3;
 }
-
-.titulo-seccion-reserva {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #1e3a5f;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-bottom: 15px;
-    border-bottom: 3px solid #247ba0;
-}
-
-.icon-reserva {
-    font-size: 2rem;
-}
-
-/* Grupos de Formulario */
-.form-reserva-grupo {
-    margin-bottom: 25px;
-}
-
-.form-reserva-grupo label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 1rem;
-    color: #0a2463;
-    margin-bottom: 10px;
-    letter-spacing: 0.3px;
-}
-
-.label-icon {
-    font-size: 1.2rem;
-}
-
-.form-reserva-grupo input {
+.form-reserva-section input[type="date"],
+.form-reserva-section input[type="time"],
+.form-reserva-section input[type="number"] {
     width: 100%;
-    padding: 14px 18px;
-    border: 2px solid #e0e7ef;
-    border-radius: 12px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    color: #333;
+    padding: 8px 10px;
+    border: 1px solid #cfd8dc;
+    border-radius: 5px;
+    font-size: 1em;
     background: #f9fafb;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
+    margin-bottom: 10px;
 }
-
-.form-reserva-grupo input:focus {
-    outline: none;
-    border-color: #247ba0;
-    background: #fff;
-    box-shadow: 0 0 0 4px rgba(36, 123, 160, 0.1);
-}
-
-.form-reserva-grupo input::placeholder {
-    color: #a8b5c0;
-    font-style: italic;
-}
-
-/* Botón de Reservar */
-.btn-reservar {
-    width: 100%;
-    background: linear-gradient(135deg, #247ba0 0%, #3ab0e0 100%);
+.btn-finalizar {
+    background: #009fe3;
     color: #fff;
     border: none;
-    padding: 16px 30px;
-    border-radius: 12px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 20px rgba(36, 123, 160, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    letter-spacing: 0.5px;
-    margin-top: 30px;
-}
-
-.btn-reservar:hover {
-    background: linear-gradient(135deg, #1e3a5f 0%, #247ba0 100%);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(36, 123, 160, 0.4);
-}
-
-.btn-reservar:active {
-    transform: translateY(-1px);
-}
-
-.btn-icon {
-    font-size: 1.3rem;
+    padding: 10px 28px;
+    border-radius: 5px;
     font-weight: bold;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.2s;
 }
-
-/* ============================================
-   SECCIÓN HISTORIAL - DERECHA
-   ============================================ */
+.btn-finalizar:hover {
+    background: #007bb5;
+}
 
 .tabla-reservas-section {
     background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(10, 36, 99, 0.1);
-    padding: 40px 35px;
-    transition: all 0.3s ease;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 28px 32px 18px 32px;
 }
-
-.titulo-tabla-reserva {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #1e3a5f;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-bottom: 15px;
-    border-bottom: 3px solid #247ba0;
-}
-
-.icon-historial {
-    font-size: 2rem;
-}
-
-/* Wrapper de Tabla */
-.tabla-wrapper {
-    overflow-x: auto;
-    border-radius: 12px;
-}
-
-/* Tabla de Reservas */
 .main-table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-family: 'Poppins', sans-serif;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
-
-.main-table thead {
-    background: linear-gradient(135deg, #0a2463 0%, #247ba0 100%);
+.main-table th, .main-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: center;
 }
-
 .main-table th {
-    padding: 16px 12px;
+    background: #009fe3;
     color: #fff;
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-align: center;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+    font-weight: bold;
 }
-
-.main-table th:first-child {
-    border-top-left-radius: 12px;
-}
-
-.main-table th:last-child {
-    border-top-right-radius: 12px;
-}
-
-.main-table tbody tr {
-    transition: all 0.3s ease;
-}
-
-.main-table tbody tr:hover {
-    background: #f0f7fa;
-    transform: scale(1.01);
-    box-shadow: 0 4px 12px rgba(36, 123, 160, 0.1);
-}
-
-.main-table td {
-    padding: 18px 12px;
-    text-align: center;
-    border-bottom: 1px solid #e8eef3;
-    font-size: 0.95rem;
-    color: #333;
-    font-weight: 500;
-}
-
-.main-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* Estados de Reserva */
 .estado {
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.97em;
+    font-weight: bold;
     color: #fff;
     display: inline-block;
-    letter-spacing: 0.3px;
-    text-transform: capitalize;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.estado.pendiente { background: #ffb300; color: #fff; }
+.estado.confirmada { background: #43a047; color: #fff; }
+.estado.cancelada { background: #e53935; color: #fff; }
+
+.aviso-login .card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 32px 24px;
 }
 
-.estado.pendiente {
-    background: linear-gradient(135deg, #ffb300 0%, #ff8f00 100%);
+/* Estilos extraídos de los estilos inline de reservas.jsp */
+.form-reserva-section {
+    max-width: 600px;
+    margin: 0 auto 40px auto;
 }
-
-.estado.confirmada {
-    background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
+.titulo-seccion-reserva {
+    color: #009fe3;
+    margin-bottom: 18px;
 }
-
-.estado.cancelada {
-    background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+.form-reserva-flex {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
 }
-
-/* Tabla Vacía */
+.form-reserva-campo-200 {
+    flex: 1 1 200px;
+}
+.form-reserva-campo-120 {
+    flex: 1 1 120px;
+}
+.btn-finalizar.mt-18 {
+    margin-top: 18px;
+}
+.tabla-reservas-section {
+    max-width: 900px;
+    margin: 0 auto;
+}
+.titulo-tabla-reserva {
+    color: #009fe3;
+    margin-bottom: 18px;
+}
 .tabla-reservas-vacia {
     text-align: center;
-    padding: 60px 20px !important;
-    color: #7a8a99;
-    font-size: 1.1rem;
-    font-style: italic;
-    font-family: 'Poppins', sans-serif;
 }
+/* Fin estilos migrados */
 
-/* ============================================
-   RESPONSIVE DESIGN
-   ============================================ */
-
-/* Tablet */
-@media (max-width: 1024px) {
-    .reservas-container {
-        grid-template-columns: 1fr;
-        gap: 30px;
+@media (max-width: 700px) {
+    .form-reserva-section, .tabla-reservas-section {
+        padding: 12px 4vw;
     }
-
-    .form-reserva-section {
-        position: static;
+    .main-table th, .main-table td {
+        padding: 7px 2px;
+        font-size: 0.95em;
     }
-
-    .main-title-reservas {
-        font-size: 2.5rem;
-    }
-}
-
-/* Móvil */
-@media (max-width: 768px) {
-    .reservas-main {
-        padding: 90px 15px 40px 15px;
-    }
-
-    .main-title-reservas {
-        font-size: 2rem;
-        margin-bottom: 30px;
-    }
-
-    .form-reserva-section,
-    .tabla-reservas-section {
-        padding: 30px 20px;
-        border-radius: 15px;
-    }
-
-    .titulo-seccion-reserva,
-    .titulo-tabla-reserva {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-    }
-
-    .icon-reserva,
-    .icon-historial {
-        font-size: 1.5rem;
-    }
-
-    .form-reserva-grupo {
-        margin-bottom: 20px;
-    }
-
-    .form-reserva-grupo label {
-        font-size: 0.95rem;
-    }
-
-    .form-reserva-grupo input {
-        padding: 12px 15px;
-        font-size: 0.95rem;
-    }
-
-    .btn-reservar {
-        padding: 14px 25px;
-        font-size: 1rem;
-    }
-
-    .main-table th,
-    .main-table td {
-        padding: 12px 8px;
-        font-size: 0.85rem;
-    }
-
-    .estado {
-        padding: 5px 12px;
-        font-size: 0.75rem;
-    }
-}
-
-/* Móvil Pequeño */
-@media (max-width: 480px) {
-    .reservas-main {
-        padding: 80px 10px 30px 10px;
-    }
-
-    .main-title-reservas {
-        font-size: 1.7rem;
-    }
-
-    .form-reserva-section,
-    .tabla-reservas-section {
-        padding: 25px 15px;
-    }
-
-    .titulo-seccion-reserva,
-    .titulo-tabla-reserva {
-        font-size: 1.3rem;
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
-    }
-
-    .main-table {
-        font-size: 0.8rem;
-    }
-
-    .main-table th,
-    .main-table td {
-        padding: 10px 5px;
-        font-size: 0.75rem;
-    }
-
-    .estado {
-        padding: 4px 10px;
-        font-size: 0.7rem;
-    }
-
-    .tabla-reservas-vacia {
-        padding: 40px 10px !important;
-        font-size: 0.95rem;
-    }
-}
-
-/* Extra Pequeño */
-@media (max-width: 360px) {
-    .main-title-reservas {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-    }
-
-    .titulo-seccion-reserva,
-    .titulo-tabla-reserva {
-        font-size: 1.2rem;
-    }
-
-    .btn-reservar {
-        padding: 12px 20px;
-        font-size: 0.95rem;
-    }
-
-    .main-table th,
-    .main-table td {
-        padding: 8px 4px;
-        font-size: 0.7rem;
-    }
-}
-
-/* ============================================
-   ANIMACIONES
-   ============================================ */
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.form-reserva-section,
-.tabla-reservas-section {
-    animation: fadeInUp 0.6s ease-out;
-}
-
-.tabla-reservas-section {
-    animation-delay: 0.2s;
-    animation-fill-mode: both;
 }
 

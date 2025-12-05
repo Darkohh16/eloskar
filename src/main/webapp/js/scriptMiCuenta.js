@@ -30,35 +30,19 @@ document.addEventListener('DOMContentLoaded', function() {
     botones.forEach(function(btn) {
       btn.addEventListener('click', function() {
         var idPedido = btn.getAttribute('data-id');
-
-        // Actualizar el título del modal con el ID del pedido
-        var titulo = modalContent.querySelector('h3');
-        if (titulo && idPedido) {
-          titulo.textContent = 'Detalles del Pedido #' + idPedido;
-        }
-
         if (idPedido) {
-          // Intentar cargar datos desde el backend
           fetch('SrvVerDetallePedido?id=' + idPedido)
-            .then(resp => {
-              if (!resp.ok) throw new Error('No hay datos del servidor');
-              return resp.text();
-            })
+            .then(resp => resp.text())
             .then(html => {
-              // Reemplazar la tabla con datos del backend
+              // Solo reemplazo la tabla, mantengo el título y botón cerrar
               var tabla = modalContent.querySelector('table');
               if (tabla) tabla.remove();
               var tempDiv = document.createElement('div');
               tempDiv.innerHTML = html;
               var nuevaTabla = tempDiv.querySelector('table');
               if (nuevaTabla) {
-                modalContent.insertBefore(nuevaTabla, cerrar.nextSibling.nextSibling);
+                modalContent.insertBefore(nuevaTabla, cerrar.nextSibling.nextSibling); // después del título
               }
-              modal.classList.add('active');
-            })
-            .catch(error => {
-              // Si falla el backend, mostrar modal con datos estáticos pero ID actualizado
-              console.log('Mostrando datos de ejemplo para pedido #' + idPedido);
               modal.classList.add('active');
             });
         } else {
